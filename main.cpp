@@ -7,6 +7,7 @@
 
 int main()
 {
+	// test
 	sf::RenderWindow window(sf::VideoMode(640, 480), "Just A title", sf::Style::Titlebar | sf::Style::Close);
 	sf::Event ev;
 	sf::CircleShape circle(30);
