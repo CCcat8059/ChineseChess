@@ -7,10 +7,11 @@
 
 int main()
 {
+	// test cccat
 	sf::RenderWindow window(sf::VideoMode(640, 480), "Just A title", sf::Style::Titlebar | sf::Style::Close);
 	sf::Event ev;
 	sf::CircleShape circle(30);
-	circle.setFillColor(sf::Color(85, 255, 85));
+	circle.setFillColor(sf::Color(255, 85, 85));
 	while (window.isOpen())
 	{
 		while (window.pollEvent(ev))
