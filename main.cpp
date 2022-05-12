@@ -9,10 +9,10 @@
 int main()
 {
 	// test cccat
-	sf::RenderWindow window(sf::VideoMode(2667, 2892), "ChineseChess", sf::Style::Titlebar | sf::Style::Close);
+	sf::RenderWindow window(sf::VideoMode(1330, 1445), "ChineseChess", sf::Style::Titlebar | sf::Style::Close);
 	sf::Event ev;
 	sf::Texture bk;
-	if (!bk.loadFromFile("./board.jpg"))
+	if (!bk.loadFromFile("board.jpg"))
 		return EXIT_FAILURE;
 	sf::Sprite spriteBg(bk);
 	while (window.isOpen())
