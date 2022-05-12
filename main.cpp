@@ -1,4 +1,5 @@
 #include <SFML/Graphics.hpp>
+
 #include <SFML/Network.hpp>
 #include <SFML/Window.hpp>
 #include <SFML/System.hpp>
@@ -8,31 +9,18 @@
 int main()
 {
 	// test cccat
-	sf::RenderWindow window(sf::VideoMode(640, 480), "Just A title", sf::Style::Titlebar | sf::Style::Close);
+	sf::RenderWindow window(sf::VideoMode(2667, 2892), "ChineseChess", sf::Style::Titlebar | sf::Style::Close);
 	sf::Event ev;
-	sf::CircleShape circle(30);
-	circle.setFillColor(sf::Color(255, 85, 85));
+	sf::Texture bk;
+	if (!bk.loadFromFile("./board.jpg"))
+		return EXIT_FAILURE;
+	sf::Sprite spriteBg(bk);
 	while (window.isOpen())
 	{
-		while (window.pollEvent(ev))
-		{
-			switch (ev.type)
-			{
-			case sf::Event::Closed:
-				window.close();
-				break;
-			case sf::Event::MouseButtonPressed:
-				circle.setPosition(ev.mouseButton.x, ev.mouseButton.y);
-				std::cout << ev.mouseButton.x << ' ' << ev.mouseButton.y << '\n';
-				break;
-			case sf::Event::KeyPressed:
-				if (ev.key.code == sf::Keyboard::Escape)
-					window.close();
-				break;
-			}
-		}
+		
 		window.clear(sf::Color::White);
-		window.draw(circle);
+		window.draw(spriteBg);
 		window.display();
 	}
 }
+
