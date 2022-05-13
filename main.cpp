@@ -1,38 +1,17 @@
-#include <SFML/Graphics.hpp>
-#include <SFML/Network.hpp>
-#include <SFML/Window.hpp>
-#include <SFML/System.hpp>
-#include <SFML/Audio.hpp>
-#include <iostream>
+#include "GameManager.h"
+#include "Button.h"
 
 int main()
 {
 	// test cccat
-	sf::RenderWindow window(sf::VideoMode(640, 480), "Just A title", sf::Style::Titlebar | sf::Style::Close);
-	sf::Event ev;
-	sf::CircleShape circle(30);
-	circle.setFillColor(sf::Color(255, 85, 85));
-	while (window.isOpen())
+	GameManager game;
+
+	while (game.isRunning())
 	{
-		while (window.pollEvent(ev))
-		{
-			switch (ev.type)
-			{
-			case sf::Event::Closed:
-				window.close();
-				break;
-			case sf::Event::MouseButtonPressed:
-				circle.setPosition(ev.mouseButton.x, ev.mouseButton.y);
-				std::cout << ev.mouseButton.x << ' ' << ev.mouseButton.y << '\n';
-				break;
-			case sf::Event::KeyPressed:
-				if (ev.key.code == sf::Keyboard::Escape)
-					window.close();
-				break;
-			}
-		}
-		window.clear(sf::Color::White);
-		window.draw(circle);
-		window.display();
+		game.update();
+
+		game.render();
 	}
+	return EXIT_SUCCESS;
 }
+
