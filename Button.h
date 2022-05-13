@@ -5,7 +5,7 @@
 
 class Button
 {
-private:
+protected:
 	sf::Texture texture;
 public:
 	sf::Sprite body;
@@ -13,6 +13,8 @@ public:
 
 	Button();
 	Button(std::string, sf::Vector2f = { 0,0 }, std::string = "defaultBtnName");
+	Button(Button*);
+	Button operator=(const Button&);
 	void setTexture(std::string);
 	bool isClicked(sf::Vector2f);
 };

@@ -15,6 +15,19 @@ Button::Button(std::string path, sf::Vector2f position, std::string name)
 	body.setPosition(position.x, position.y);
 }
 
+Button::Button(Button* target)
+{
+	this->texture = target->texture;
+	this->body = target->body;
+	this->name = target->name;
+
+}
+
+Button Button::operator=(const Button& target)
+{
+	return Button(target);
+}
+
 void Button::setTexture(std::string path)
 {
 	texture.loadFromFile(path);
