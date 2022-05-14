@@ -18,16 +18,25 @@ void check_mouse(const sf::Event& event)
 
 GameManager::GameManager()
 {
-	Board = { {"General", "General", "General","General","General","General","General","General","General"},
-			  {"General", "General", "General","General","General","General","General","General","General"},
-			  {"General", "General", "General","General","General","General","General","General","General"},
-			  {"General", "General", "General","General","General","General","General","General","General"},
-			  {"General", "General", "General","General","General","General","General","General","General"},
-			  {"General", "General", "General","General","General","General","General","General","General"},
-			  {"General", "General", "General","General","General","General","General","General","General"},
-			  {"General", "General", "General","General","General","General","General","General","General"},
-			  {"General", "General", "General","General","General","General","General","General","General"},
-			  {"General", "General", "General","General","General","General","General","General","General"} };
+	Board = { {"Chariot", "Horse" , "Elephant","Advisor","King"   ,"Advisor","Elephant","Horse" ,"Chariot"},
+
+			  {"Empty"  , "Empty" , "Empty"   ,"Empty"  ,"Empty"  ,"Empty"  ,"Empty"   ,"Empty" ,"Empty"  },
+
+			  {"Empty"  , "Cannon", "Empty"   ,"Empty"  ,"Empty"  ,"Empty"  ,"Empty"   ,"Cannon","Empty"  },
+
+			  {"Soldier", "Empty" , "Soldier" ,"Empty"  ,"Soldier","Empty"  ,"Soldier" ,"Empty" ,"Soldier"},
+
+			  {"Empty"  , "Empty" , "Empty"   ,"Empty"  ,"Empty"  ,"Empty"  ,"Empty"   ,"Empty" ,"Empty"  },
+
+			  {"Empty"  , "Empty" , "Empty"   ,"Empty"  ,"Empty"  ,"Empty"  ,"Empty"   ,"Empty" ,"Empty"  },
+
+			  {"Soldier", "Empty" , "Soldier" ,"Empty"  ,"Soldier","Empty"  ,"Soldier" ,"Empty" ,"Soldier"},
+
+			  {"Empty"  , "Cannon", "Empty"   ,"Empty"  ,"Empty"  ,"Empty"  ,"Empty"   ,"Cannon","Empty"  },
+
+			  {"Empty"  , "Empty" , "Empty"   ,"Empty"  ,"Empty"  ,"Empty"  ,"Empty"   ,"Empty" ,"Empty"  },
+
+			  {"Chariot", "Horse" , "Elephant","Advisor","King"   ,"Advisor","Elephant","Horse" ,"Chariot"} };
 	
 	chessBoard = std::vector<std::vector<Chess*> > (10, std::vector<Chess*>(9));
 	sf::VideoMode videoMode(810, 875);
@@ -42,12 +51,34 @@ GameManager::GameManager()
 	
 	for (int i = 0; i < 10; i++) {
 		for (int j = 0; j < 9; j++) {
+			std::string color;
+			if (i <= 4 && j <= 9) color = "black";
+			else color = "red";
 			//std::cout << i << ", " << j << " = " << Board[i][j] << std::endl;
-			if (Board[i][j] == "General") {
-				chessBoard[i][j] = new General(sf::Vector2f(54 + j * 87.5 - 37.5, 50 + i* 85.5 - 37.5));
-				//chessBoard[i][j]->getBody().setPosition();
+			if (Board[i][j] == "Empty") {
+				chessBoard[i][j] = new Empty(sf::Vector2f(54 + j * 87.5 - 37.5, 50 + i * 85.5 - 37.5));
 			}
-			
+			if (Board[i][j] == "King") {
+				chessBoard[i][j] = new King(sf::Vector2f(54 + j * 87.5 - 37.5, 50 + i* 85.5 - 37.5), color);
+			}
+			if (Board[i][j] == "Advisor") {
+				chessBoard[i][j] = new Advisor(sf::Vector2f(54 + j * 87.5 - 37.5, 50 + i * 85.5 - 37.5), color);
+			}
+			if (Board[i][j] == "Elephant") {
+				chessBoard[i][j] = new Elephant(sf::Vector2f(54 + j * 87.5 - 37.5, 50 + i * 85.5 - 37.5), color);
+			}
+			if (Board[i][j] == "Horse") {
+				chessBoard[i][j] = new Horse(sf::Vector2f(54 + j * 87.5 - 37.5, 50 + i * 85.5 - 37.5), color);
+			}
+			if (Board[i][j] == "Chariot") {
+				chessBoard[i][j] = new Chariot(sf::Vector2f(54 + j * 87.5 - 37.5, 50 + i * 85.5 - 37.5), color);
+			}
+			if (Board[i][j] == "Cannon") {
+				chessBoard[i][j] = new Cannon(sf::Vector2f(54 + j * 87.5 - 37.5, 50 + i * 85.5 - 37.5), color);
+			}
+			if (Board[i][j] == "Soldier") {
+				chessBoard[i][j] = new Soldier(sf::Vector2f(54 + j * 87.5 - 37.5, 50 + i * 85.5 - 37.5), color);
+			}
 		}
 	}
 	
@@ -104,7 +135,7 @@ void GameManager::update()
 				for (int j = 0; j < 9; j++)
 				{
 					if (chessBoard[i][j]->isClicked(sf::Vector2f(ev.mouseButton.x, ev.mouseButton.y))) {
-						std::cout << i  << "," << j << '\n';
+						std::cout << i  << "," << j << " " << chessBoard[i][j]->getName() << '\n';
 					}
 				}
 			}
@@ -114,10 +145,6 @@ void GameManager::update()
 				window->close();
 			break;
 		}
-
-
-		check_mouse(ev);
-
 	}
 }
 
