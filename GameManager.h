@@ -21,7 +21,23 @@ private:
 	sf::Texture bgTexture;
 	sf::Sprite* background;
 
+
 	Board board;
+
+  /*
+	// board class variable
+	Chess* chosen = new Chess;
+	bool chosenFlag = false;
+	int chosenX, chosenY;
+	int nextX, nextY;
+  
+
+	// Board store the name of chesses
+	std::vector<std::vector<std::string> > Board;
+	// chessBoard store the class of chesses
+	std::vector<std::vector<Chess*> > chessBoard;
+  */
+
 public:
 	GameManager();
 	~GameManager();
@@ -29,8 +45,8 @@ public:
 	const bool isRunning() const;
 	void update();
 	void render();
-
-
+	void draw();
+	
 	friend void check_mouse(const sf::Event& event);
 };
 
