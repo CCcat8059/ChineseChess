@@ -1,6 +1,7 @@
 #pragma once
 #include <SFML/Graphics.hpp>
 #include <string>
+#include <iostream>
 
 class Button
 {
@@ -18,7 +19,15 @@ public:
 	Button operator=(const Button&);
 	void setTexture(std::string);
 	bool isClicked(sf::Event&);
-	sf::Sprite getBody() { return body; }
+	sf::Sprite getBody() { 
+		texture.setRepeated(true);
+		return body; 
+	}
 	std::string getName() { return name; }
 };
 
+class Point {
+public:
+	int x;
+	int y;
+};
