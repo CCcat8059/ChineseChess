@@ -45,7 +45,7 @@ bool Button::isClicked(sf::Event& ev)
 {
 	if (ev.type != sf::Event::MouseButtonPressed)
 		return false;
-	
+
 	sf::Vector2f clickPos = sf::Vector2f(ev.mouseButton.x, ev.mouseButton.y);
 	sf::Vector2f btnPos = body.getPosition();
 	sf::Vector2f btnEnd = btnPos + sf::Vector2f(75, 75);
