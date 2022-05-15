@@ -1,6 +1,7 @@
 #include "GameManager.h"
 #include "Button.h"
 
+
 int main()
 {
 	// test cccat
@@ -9,7 +10,6 @@ int main()
 	while (game.isRunning())
 	{
 		game.update();
-
 		game.render();
 	}
 	return EXIT_SUCCESS;
