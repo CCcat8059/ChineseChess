@@ -6,7 +6,7 @@
 #include <iostream>
 #include <vector>
 
-#include "Button.h"
+#include "Board.h"
 #include "Chess.h"
 #pragma once
 
@@ -21,13 +21,7 @@ private:
 	sf::Texture bgTexture;
 	sf::Sprite* background;
 
-	Button* chosen = new Button;
-	bool chosenFlag = false;
-
-	// Board store the name of chesses
-	std::vector<std::vector<std::string> > Board;
-	// chessBoard store the class of chesses
-	std::vector<std::vector<Chess*> > chessBoard;
+	Board board;
 public:
 	GameManager();
 	~GameManager();

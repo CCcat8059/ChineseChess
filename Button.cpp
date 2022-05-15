@@ -7,11 +7,19 @@ Button::Button()
 	this->texture = sf::Texture();
 }
 
-Button::Button(std::string path, sf::Vector2f position, std::string name)
+Button::Button(sf::Vector2f position)
+{
+	body.setPosition(position.x, position.y);
+}
+
+Button::Button(std::string name)
 {
 	this->name = name;
-	texture.loadFromFile(path);
-	body.setTexture(texture);
+}
+
+Button::Button(sf::Vector2f position, std::string name)
+{
+	this->name = name;
 	body.setPosition(position.x, position.y);
 }
 
@@ -20,7 +28,6 @@ Button::Button(Button* target)
 	this->texture = target->texture;
 	this->body = target->body;
 	this->name = target->name;
-
 }
 
 Button Button::operator=(const Button& target)
@@ -34,10 +41,15 @@ void Button::setTexture(std::string path)
 	body.setTexture(texture);
 }
 
-bool Button::isClicked(sf::Vector2f clickPos)
+bool Button::isClicked(sf::Event& ev)
 {
+	if (ev.type != sf::Event::MouseButtonPressed)
+		return false;
+	
+	sf::Vector2f clickPos = sf::Vector2f(ev.mouseButton.x, ev.mouseButton.y);
 	sf::Vector2f btnPos = body.getPosition();
 	sf::Vector2f btnEnd = btnPos + sf::Vector2f(75, 75);
+
 	if (clickPos.x<btnPos.x || clickPos.x>btnEnd.x)
 		return false;
 	if (clickPos.y<btnPos.y || clickPos.y>btnEnd.y)
