@@ -2,22 +2,22 @@
 
 void check_mouse(const sf::Event& event)
 {
-	if (event.type == sf::Event::MouseButtonPressed) { //ÀË´ú¹«¼Ğ ¿é¥X¹«¼Ğ®y¼Ğ
+	if (event.type == sf::Event::MouseButtonPressed) { //æª¢æ¸¬é¼ æ¨™ è¼¸å‡ºé¼ æ¨™åº§æ¨™
 		if (event.mouseButton.button == sf::Mouse::Right) {
 			std::cout << event.mouseButton.x << std::endl;
 			std::cout << event.mouseButton.y << std::endl;
 		}
 	}
 
-	if (event.type == sf::Event::MouseButtonReleased) { //ÀË´ú¹«¼ĞÄÀ©ñ
+	if (event.type == sf::Event::MouseButtonReleased) { //æª¢æ¸¬é¼ æ¨™é‡‹æ”¾
 		std::cout << "realease" << std::endl;
 	}
-
 }
-
 
 GameManager::GameManager()
 {
+	// Board init
+
 	Board = { {"black chariot", "black horse" , "black elephant","black advisor","black king"   ,"black advisor","black elephant","black horse" ,"black chariot"},
 
 			  {"none empty"  , "none empty" , "none empty"   ,"none empty"  ,"none empty"  ,"none empty"  ,"none empty"   ,"none empty" ,"none empty"  },
@@ -38,19 +38,19 @@ GameManager::GameManager()
 
 			  {"red chariot", "red horse" , "red elephant","red advisor","red king"   ,"red advisor","red elephant","red horse" ,"red chariot"} };
 	
-	chessBoard = std::vector<std::vector<Chess*> > (10, std::vector<Chess*>(9));
+	//chessBoard = std::vector<std::vector<Chess*> > (10, std::vector<Chess*>(9));
+
 	sf::VideoMode videoMode(810, 875);
 	this->window = new sf::RenderWindow(videoMode, "ChineseChess", sf::Style::Titlebar | sf::Style::Close);
-
 
 	this->bgTexture.loadFromFile("image/board.jpg");
 	this->background = new sf::Sprite();
 	this->background->setTexture(bgTexture);
 	this->background->setPosition(20, 20);
 
-	draw();
+	//draw();
 	
-	
+
 }
 
 GameManager::~GameManager()
@@ -69,21 +69,52 @@ void GameManager::update()
 {
 	//std::cout << "update\n";
 	while (window->pollEvent(ev))
-	{
+
+	{/*
+		std::cout << "ch = " << chosenFlag << std::endl;
+		if (chosenFlag == 1) {
+			std::cout << "1";
+			for (int i = 0; i < 9; i++)
+			{
+				if (Army[i].isClicked(sf::Vector2f(ev.mouseButton.x, ev.mouseButton.y))) {
+					chosen = &Army[i];
+					std::cout << i << '\n';
+					chosenFlag = true;
+					//continue;
+				}
+			}
+			if (ev.type == sf::Event::MouseButtonPressed && ev.mouseButton.button == sf::Mouse::Left)
+			{
+				std::cout << "2";
+				chosen->body.setPosition(ev.mouseButton.x-37.5, ev.mouseButton.y-37.5);
+				chosenFlag = false;
+				continue;
+			}
+		}
+		*/
+		Chess* clickChess = nullptr;
+
+    //
 		switch (ev.type)
 		{
 		case sf::Event::Closed:
 			window->close();
 			break;
 		case sf::Event::MouseButtonPressed:
-			std::cout << "chosen Flag = " << chosenFlag << " || ";
-			// ¿ï¤@­Ó´Ñ¤l
-			// §PÂ_·Æ¹«¿ï¾Ü¦PÃC¦âªº´Ñ¤l
 
-			// §PÂ_·Æ¹«¿ï¾Ü¨ä¥L´Ñ¤l
-				// §PÂ_¬O§_¥i¥H¨«
-					// ¬O => swap(¨â­Ó¦ì¸mªºclass)¡A´«¹ï¤è¶i§ğ
-					// §_ => ¤£°µ¥ô¦ó°Ê§@
+			// click Board
+			clickChess = board.clickBoard(ev);
+			if (clickChess != nullptr)
+				cout << clickChess->getName() << " (" << clickChess->getColor() << ")\n";
+
+			std::cout << "chosen Flag = " << chosenFlag << " || ";
+			// é¸ä¸€å€‹æ£‹å­
+			// åˆ¤æ–·æ»‘é¼ é¸æ“‡åŒé¡è‰²çš„æ£‹å­
+
+			// åˆ¤æ–·æ»‘é¼ é¸æ“‡å…¶ä»–æ£‹å­
+				// åˆ¤æ–·æ˜¯å¦å¯ä»¥èµ°
+					// æ˜¯ => swap(å…©å€‹ä½ç½®çš„class)ï¼Œæ›å°æ–¹é€²æ”»
+					// å¦ => ä¸åšä»»ä½•å‹•ä½œ
 			//std::cout << "ch = " << chosenFlag << std::endl;
 			if (chosenFlag == true) {
 				std::cout << "chosen = " << chosen->getColor() << " "  << chosen->getName() << std::endl;
@@ -99,7 +130,7 @@ void GameManager::update()
 								Board[i][j] = temp;
 								chosenFlag = false;
 								//=======================
-								//= ³oÃä»İ¤£»İ­n¸Ñºc¤l¡H =
+								//= é€™é‚Šéœ€ä¸éœ€è¦è§£æ§‹å­ï¼Ÿ =
 								//=======================
 							}
 							else {
@@ -111,7 +142,7 @@ void GameManager::update()
 								}
 								else {
 									std::cout << "false \n";
-									// ¿ï¨ìempty
+									// é¸åˆ°empty
 									chosenFlag = false;
 									continue;
 								}
@@ -157,6 +188,10 @@ void GameManager::render()
 {
 	window->clear(sf::Color::White);
 	window->draw(*this->background);
+
+	// draw Board
+	//board.drawBoard(window);
+
 	this->draw();
 	for (int i = 0; i < 10; i++) {
 		for (int j = 0; j < 9; j++)
@@ -208,5 +243,6 @@ void GameManager::draw()
 		}
 	}
 }
+
 
 

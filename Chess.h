@@ -1,73 +1,52 @@
 ﻿#pragma once
-#include <string>
-#include <iostream>
-#include <sstream>
+
 #include <SFML/Graphics/Texture.hpp>
 #include <SFML/Graphics/Sprite.hpp>
+#include <string>
 
-class Chess
-{
+#include "Button.h"
+
+class Chess : virtual public Button {
 protected:
-	sf::Texture texture;
-	sf::Sprite body;
-	std::string name;
 	std::string color;
 
 public:
 	Chess() {};
+
 	Chess(std::string path, sf::Vector2f position, std::string name, std::string color);
 	virtual bool canMove(const std::vector<std::vector<std::string>>& Board, int x1, int y1, int x2, int y2) { return 1; }
 	virtual bool isClicked(sf::Vector2f) { return 1; }
 	sf::Sprite getBody() { return body; }
 	std::string getName() { return name; }
 	std::string getColor() { return color; }
+
 };
 
 class Empty : public Chess {
 public:
-	Empty(sf::Vector2f position, std::string _color) {
+
+	Empty(sf::Vector2f position, std::string color) : Button(position, "empty") {
 		body.setPosition(position.x, position.y);
 		name = "empty";
 		this->color = _color;
 		//texture.loadFromFile("image/black/king.png");
 		body.setTexture(texture);
-	};
 
-	bool isClicked(sf::Vector2f clickPos)
-	{
-		sf::Vector2f btnPos = body.getPosition();
-		sf::Vector2f btnEnd = btnPos + sf::Vector2f(75, 75);
-		if (clickPos.x<btnPos.x || clickPos.x>btnEnd.x)
-			return false;
-		if (clickPos.y<btnPos.y || clickPos.y>btnEnd.y)
-			return false;
-		return true;
-	}
+	};
 };
+
 class King : public Chess {
 public:
-	King() {
-		name = "king";
-	}
-	King(sf::Vector2f position, std::string _color){
+
+	King(sf::Vector2f position, std::string color) : Button(position, "king") {
 		body.setPosition(position.x, position.y);
 		name = "king";
 		this->color = _color;
+
 		std::string path = "image/" + color + "/" + name + ".png";
-		texture.loadFromFile(path);
-		body.setTexture(texture);
+		this->setTexture(path);
 	};
-	
-	bool isClicked(sf::Vector2f clickPos)
-	{
-		sf::Vector2f btnPos = body.getPosition();
-		sf::Vector2f btnEnd = btnPos + sf::Vector2f(75, 75);
-		if (clickPos.x<btnPos.x || clickPos.x>btnEnd.x)
-			return false;
-		if (clickPos.y<btnPos.y || clickPos.y>btnEnd.y)
-			return false;
-		return true;
-	}
+
 
 	bool canMove(const std::vector<std::vector<std::string>>& Board, int x1, int y1, int x2, int y2) {
 		std::cout << "move func\n";
@@ -99,172 +78,79 @@ public:
 	}
 
 };
-class Advisor : public Chess {
 
+class Advisor : public Chess {
 public:
-	Advisor() {
-		name = "advisor";
-	}
-	Advisor(sf::Vector2f position, std::string _color) {
+
+	Advisor(sf::Vector2f position, std::string color) : Button(position, "advisor") {
 		body.setPosition(position.x, position.y);
 		name = "advisor";
 		this->color = _color;
 		std::string path = "image/" + color + "/" + name + ".png";
-		texture.loadFromFile(path);
-		body.setTexture(texture);
+		this->setTexture(path);
 	};
-
-	bool isClicked(sf::Vector2f clickPos)
-	{
-		sf::Vector2f btnPos = body.getPosition();
-		sf::Vector2f btnEnd = btnPos + sf::Vector2f(75, 75);
-		if (clickPos.x<btnPos.x || clickPos.x>btnEnd.x)
-			return false;
-		if (clickPos.y<btnPos.y || clickPos.y>btnEnd.y)
-			return false;
-		return true;
-	}
-
 };
 
 class Elephant : public Chess {
-
 public:
-	Elephant() {
-		name = "elephant";
-	}
-	Elephant(sf::Vector2f position, std::string _color) {
+
+	Elephant(sf::Vector2f position, std::string color) : Button(position, "elephant") {
 		body.setPosition(position.x, position.y);
 		name = "elephant";
 		this->color = _color;
 		std::string path = "image/" + color + "/" + name + ".png";
-		texture.loadFromFile(path);
-		body.setTexture(texture);
+		this->setTexture(path);
 	};
-
-	bool isClicked(sf::Vector2f clickPos)
-	{
-		sf::Vector2f btnPos = body.getPosition();
-		sf::Vector2f btnEnd = btnPos + sf::Vector2f(75, 75);
-		if (clickPos.x<btnPos.x || clickPos.x>btnEnd.x)
-			return false;
-		if (clickPos.y<btnPos.y || clickPos.y>btnEnd.y)
-			return false;
-		return true;
-	}
-
 };
 
 class Horse : public Chess {
-
 public:
-	Horse() {
-		name = "horse";
-	}
-	Horse(sf::Vector2f position, std::string _color) {
+
+	Horse(sf::Vector2f position, std::string color) : Button(position, "horse") {
 		body.setPosition(position.x, position.y);
 		name = "horse";
 		this->color = _color;
+
 		std::string path = "image/" + color + "/" + name + ".png";
-		texture.loadFromFile(path);
-		body.setTexture(texture);
+		this->setTexture(path);
 	};
-
-	bool isClicked(sf::Vector2f clickPos)
-	{
-		sf::Vector2f btnPos = body.getPosition();
-		sf::Vector2f btnEnd = btnPos + sf::Vector2f(75, 75);
-		if (clickPos.x<btnPos.x || clickPos.x>btnEnd.x)
-			return false;
-		if (clickPos.y<btnPos.y || clickPos.y>btnEnd.y)
-			return false;
-		return true;
-	}
-
 };
 
 class Chariot : public Chess {
-
 public:
-	Chariot() {
-		name = "chariot";
-	}
-	Chariot(sf::Vector2f position, std::string _color) {
+
+	Chariot(sf::Vector2f position, std::string color) : Button(position, "chariot") {
 		body.setPosition(position.x, position.y);
 		name = "chariot";
 		this->color = _color;
 		std::string path = "image/" + color + "/" + name + ".png";
-		texture.loadFromFile(path);
-		body.setTexture(texture);
+		this->setTexture(path);
 	};
-
-	bool isClicked(sf::Vector2f clickPos)
-	{
-		sf::Vector2f btnPos = body.getPosition();
-		sf::Vector2f btnEnd = btnPos + sf::Vector2f(75, 75);
-		if (clickPos.x<btnPos.x || clickPos.x>btnEnd.x)
-			return false;
-		if (clickPos.y<btnPos.y || clickPos.y>btnEnd.y)
-			return false;
-		return true;
-	}
-
 };
 
 class Cannon : public Chess {
-
 public:
-	Cannon() {
-		name = "cannon";
-	}
-	Cannon(sf::Vector2f position, std::string _color) {
+
+	Cannon(sf::Vector2f position, std::string color) : Button(position, "cannon") {
 		body.setPosition(position.x, position.y);
 		name = "cannon";
 		this->color = _color;
 		std::string path = "image/" + color + "/" + name + ".png";
-		texture.loadFromFile(path);
-		body.setTexture(texture);
+		this->setTexture(path);
 	};
-
-	bool isClicked(sf::Vector2f clickPos)
-	{
-		sf::Vector2f btnPos = body.getPosition();
-		sf::Vector2f btnEnd = btnPos + sf::Vector2f(75, 75);
-		if (clickPos.x<btnPos.x || clickPos.x>btnEnd.x)
-			return false;
-		if (clickPos.y<btnPos.y || clickPos.y>btnEnd.y)
-			return false;
-		return true;
-	}
-
 };
 
 class Soldier : public Chess {
-
 public:
-	Soldier() {
-		name = "soldier";
-	}
-	Soldier(sf::Vector2f position, std::string _color) {
+
+	Soldier(sf::Vector2f position, std::string color) : Button(position, "soldier") {
+		this->color = color;
 		body.setPosition(position.x, position.y);
 		name = "soldier";
 		this->color = _color;
 		std::string path = "image/" + color + "/" + name + ".png";
-		texture.loadFromFile(path);
-		body.setTexture(texture);
+		this->setTexture(path);
 	};
-
-	bool isClicked(sf::Vector2f clickPos)
-	{
-		sf::Vector2f btnPos = body.getPosition();
-		sf::Vector2f btnEnd = btnPos + sf::Vector2f(75, 75);
-		if (clickPos.x<btnPos.x || clickPos.x>btnEnd.x)
-			return false;
-		if (clickPos.y<btnPos.y || clickPos.y>btnEnd.y)
-			return false;
-		return true;
-	}
-
 };
 /*
 帥 General
