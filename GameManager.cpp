@@ -52,15 +52,10 @@ void GameManager::update()
 		case sf::Event::MouseButtonPressed:
 			// click Board
 			clickChess = board.clickBoard(ev);
-			//cout << clickChess->getPos().x << ", " << clickChess->getPos().y << " | " << clickChess->getName() << " (" << clickChess->getColor() << ")\n";
-			/*
-			for (auto& v : board.getChessBoard()) {
-				for (auto& c : v) {
-					cout << c->getName() <<"  ";
-				}
-				cout << endl;
+			if (clickChess != nullptr)
+			{
+				std::cout << clickChess->getName() << ' ' << clickChess->getColor() << "\n";
 			}
-			*/
 			break;
 		case sf::Event::KeyPressed:
 			if (ev.key.code == sf::Keyboard::Escape)

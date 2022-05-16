@@ -22,9 +22,3 @@ public:
 	sf::Sprite& getBody() { return body; }
 	std::string getName() { return name; }
 };
-
-class Point {
-public:
-	int x;
-	int y;
-};
