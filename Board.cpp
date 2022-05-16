@@ -35,25 +35,25 @@ Board::Board()
 				chessBoard[i][j] = new Empty(position);
 			}
 			else if (nameTable[i][j] == "King") {
-				chessBoard[i][j] = new King(position, color, { i,j });
+				chessBoard[i][j] = new King(position, color);
 			}
 			else if (nameTable[i][j] == "Advisor") {
-				chessBoard[i][j] = new Advisor(position, color, { i,j });
+				chessBoard[i][j] = new Advisor(position, color);
 			}
 			else if (nameTable[i][j] == "Elephant") {
-				chessBoard[i][j] = new Elephant(position, color, { i,j });
+				chessBoard[i][j] = new Elephant(position, color);
 			}
 			else if (nameTable[i][j] == "Horse") {
-				chessBoard[i][j] = new Horse(position, color, { i,j });
+				chessBoard[i][j] = new Horse(position, color);
 			}
 			else if (nameTable[i][j] == "Chariot") {
-				chessBoard[i][j] = new Chariot(position, color, { i,j });
+				chessBoard[i][j] = new Chariot(position, color);
 			}
 			else if (nameTable[i][j] == "Cannon") {
-				chessBoard[i][j] = new Cannon(position, color, { i,j });
+				chessBoard[i][j] = new Cannon(position, color);
 			}
 			else if (nameTable[i][j] == "Soldier") {
-				chessBoard[i][j] = new Soldier(position, color, { i,j });
+				chessBoard[i][j] = new Soldier(position, color);
 			}
 		}
 	}
@@ -91,7 +91,6 @@ Chess* Board::clickBoard(sf::Event& ev)
 				}
 				else if (chessBoard[i][j]->getName() != "empty")
 				{
-					std::cout << "take up\n";
 					// store
 					chosenChessIndex = { i,j };
 					return chessBoard[i][j];
