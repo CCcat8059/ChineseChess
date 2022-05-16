@@ -35,25 +35,25 @@ Board::Board()
 				chessBoard[i][j] = new Empty(position);
 			}
 			else if (nameTable[i][j] == "King") {
-				chessBoard[i][j] = new King(position, color);
+				chessBoard[i][j] = new King(position, color, { i,j });
 			}
 			else if (nameTable[i][j] == "Advisor") {
-				chessBoard[i][j] = new Advisor(position, color);
+				chessBoard[i][j] = new Advisor(position, color, { i,j });
 			}
 			else if (nameTable[i][j] == "Elephant") {
-				chessBoard[i][j] = new Elephant(position, color);
+				chessBoard[i][j] = new Elephant(position, color, { i,j });
 			}
 			else if (nameTable[i][j] == "Horse") {
-				chessBoard[i][j] = new Horse(position, color);
+				chessBoard[i][j] = new Horse(position, color, { i,j });
 			}
 			else if (nameTable[i][j] == "Chariot") {
-				chessBoard[i][j] = new Chariot(position, color);
+				chessBoard[i][j] = new Chariot(position, color, { i,j });
 			}
 			else if (nameTable[i][j] == "Cannon") {
-				chessBoard[i][j] = new Cannon(position, color);
+				chessBoard[i][j] = new Cannon(position, color, { i,j });
 			}
 			else if (nameTable[i][j] == "Soldier") {
-				chessBoard[i][j] = new Soldier(position, color);
+				chessBoard[i][j] = new Soldier(position, color, { i,j });
 			}
 		}
 	}
@@ -91,6 +91,7 @@ Chess* Board::clickBoard(sf::Event& ev)
 				}
 				else if (chessBoard[i][j]->getName() != "empty")
 				{
+					std::cout << "take up\n";
 					// store
 					chosenChessIndex = { i,j };
 					return chessBoard[i][j];
@@ -119,10 +120,22 @@ void Board::removeChess(Point target)
 
 void Board::drawBoard(sf::RenderWindow* window)
 {
-	for (auto& v : chessBoard)
-	{
-		for (auto& c : v)
-			window->draw(c->getBody());
+	//for (auto& v : chessBoard)
+	//	for (auto& c : v)
+	//		window->draw(c->getBody());
+	for (int i = 0; i < 10; i++) {
+		for (int j = 0; j < 9; j++)
+		{
+			window->draw(chessBoard[i][j]->getBody());
+		}
 	}
 }
 
+void Board::update()
+{
+	for (auto& v : chessBoard) {
+		for (auto& c : v) {
+			c->update();
+		}
+	}
+}

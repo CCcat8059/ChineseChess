@@ -1,6 +1,7 @@
 #pragma once
 #include <SFML/Graphics.hpp>
 #include <string>
+#include <iostream>
 
 class Button
 {
@@ -22,3 +23,8 @@ public:
 	std::string getName() { return name; }
 };
 
+class Point {
+public:
+	int x;
+	int y;
+};

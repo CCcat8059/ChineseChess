@@ -2,14 +2,14 @@
 
 void check_mouse(const sf::Event& event)
 {
-	if (event.type == sf::Event::MouseButtonPressed) { //檢測鼠標 輸出鼠標座標
+	if (event.type == sf::Event::MouseButtonPressed) { 
 		if (event.mouseButton.button == sf::Mouse::Right) {
 			std::cout << event.mouseButton.x << std::endl;
 			std::cout << event.mouseButton.y << std::endl;
 		}
 	}
 
-	if (event.type == sf::Event::MouseButtonReleased) { //檢測鼠標釋放
+	if (event.type == sf::Event::MouseButtonReleased) {
 		std::cout << "realease" << std::endl;
 	}
 }
@@ -17,6 +17,7 @@ void check_mouse(const sf::Event& event)
 GameManager::GameManager()
 {
 	// Board init
+	
 	sf::VideoMode videoMode(810, 875);
 	this->window = new sf::RenderWindow(videoMode, "ChineseChess", sf::Style::Titlebar | sf::Style::Close);
 
@@ -51,8 +52,15 @@ void GameManager::update()
 		case sf::Event::MouseButtonPressed:
 			// click Board
 			clickChess = board.clickBoard(ev);
-			if (clickChess != nullptr)
-				cout << clickChess->getName() << " (" << clickChess->getColor() << ")\n";
+			//cout << clickChess->getPos().x << ", " << clickChess->getPos().y << " | " << clickChess->getName() << " (" << clickChess->getColor() << ")\n";
+			/*
+			for (auto& v : board.getChessBoard()) {
+				for (auto& c : v) {
+					cout << c->getName() <<"  ";
+				}
+				cout << endl;
+			}
+			*/
 			break;
 		case sf::Event::KeyPressed:
 			if (ev.key.code == sf::Keyboard::Escape)
@@ -75,7 +83,9 @@ void GameManager::render()
 {
 	window->clear(sf::Color::White);
 	window->draw(*this->background);
+
 	// draw Board
+	board.update();
 	board.drawBoard(window);
 	window->display();
 }
