@@ -12,7 +12,7 @@ public:
 	Chess() {};
 	~Chess() {};
 	std::string getColor() { return color; };
-	virtual void move() { return; }
+	virtual bool canMove(int x1, int y1, int x2, int y2, std::vector<std::vector<Chess*>> chessBoard) { return 0; }
 	void update() {
 		std::string path = "image/" + color + "/" + name + ".png";
 	}
@@ -31,6 +31,8 @@ public:
 		this->setTexture(path);
 	};
 	~King() {};
+
+	bool canMove(int x1, int y1, int x2, int y2, std::vector<std::vector<Chess*>> chessBoard);
 };
 
 class Advisor : public Chess {
@@ -41,6 +43,8 @@ public:
 		this->setTexture(path);
 	};
 	~Advisor() {};
+
+	bool canMove(int x1, int y1, int x2, int y2, std::vector<std::vector<Chess*>> chessBoard);
 };
 
 class Elephant : public Chess {
@@ -51,6 +55,8 @@ public:
 		this->setTexture(path);
 	};
 	~Elephant() {};
+
+	bool canMove(int x1, int y1, int x2, int y2, std::vector<std::vector<Chess*>> chessBoard);
 };
 
 class Horse : public Chess {
@@ -61,6 +67,8 @@ public:
 		this->setTexture(path);
 	};
 	~Horse() {};
+
+	bool canMove(int x1, int y1, int x2, int y2, std::vector<std::vector<Chess*>> chessBoard);
 };
 
 class Chariot : public Chess {
@@ -71,6 +79,8 @@ public:
 		this->setTexture(path);
 	};
 	~Chariot() {};
+
+	bool canMove(int x1, int y1, int x2, int y2, std::vector<std::vector<Chess*>> chessBoard);
 };
 
 class Cannon : public Chess {
@@ -81,6 +91,8 @@ public:
 		this->setTexture(path);
 	};
 	~Cannon() {};
+
+	bool canMove(int x1, int y1, int x2, int y2, std::vector<std::vector<Chess*>> chessBoard);
 };
 
 class Soldier : public Chess {
@@ -91,6 +103,8 @@ public:
 		this->setTexture(path);
 	};
 	~Soldier() {};
+
+	bool canMove(int x1, int y1, int x2, int y2, std::vector<std::vector<Chess*>> chessBoard);
 };
 /*
 帥 General
