@@ -81,13 +81,27 @@ Chess* Board::clickBoard(sf::Event& ev)
 				int tempX = chosenChessIndex.x, tempY = chosenChessIndex.y;
 				if (tempX != -1 && tempY != -1)
 				{
-					// swap
-					Chess* temp = chessBoard[i][j];
-					chessBoard[i][j] = chessBoard[tempX][tempY];
-					chessBoard[tempX][tempY] = temp;
-					swapChess(chessBoard[i][j], chessBoard[tempX][tempY]);
-					chosenChessIndex = { -1,-1 };
-					return temp;
+					// 如果判斷這個棋子的Move規則，可以移動到現在選的位置 = > swap
+					if (chessBoard[tempX][tempY]->canMove(tempX, tempY, i, j, chessBoard) == true) {
+					
+						// if the color is opposite, eat it and swap
+						// otherwise just swap
+						if (chessBoard[tempX][tempY]->getColor() != chessBoard[i][j]->getColor()) {
+							this->removeChess({ i,j });
+						}
+						Chess* temp = chessBoard[i][j];
+						chessBoard[i][j] = chessBoard[tempX][tempY];
+						chessBoard[tempX][tempY] = temp;
+						swapChess(chessBoard[i][j], chessBoard[tempX][tempY]);
+						chosenChessIndex = { -1,-1 };
+						return temp;
+					}
+
+					// 無法移動，就Do Nothing
+					else {
+						chosenChessIndex = { -1,-1 };
+						continue;
+					}
 				}
 				else if (chessBoard[i][j]->getName() != "empty")
 				{
@@ -119,15 +133,9 @@ void Board::removeChess(Point target)
 
 void Board::drawBoard(sf::RenderWindow* window)
 {
-	//for (auto& v : chessBoard)
-	//	for (auto& c : v)
-	//		window->draw(c->getBody());
-	for (int i = 0; i < 10; i++) {
-		for (int j = 0; j < 9; j++)
-		{
-			window->draw(chessBoard[i][j]->getBody());
-		}
-	}
+	for (auto& v : chessBoard)
+		for (auto& c : v)
+			window->draw(c->getBody());
 }
 
 void Board::update()
