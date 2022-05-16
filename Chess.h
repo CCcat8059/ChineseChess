@@ -17,9 +17,7 @@ public:
 
 class Empty : public Chess {
 public:
-	Empty(sf::Vector2f position, std::string color) : Button(position, "empty") {
-		this->color = color;
-	};
+	Empty(sf::Vector2f position) : Button(position, "empty") {};
 };
 
 class King : public Chess {

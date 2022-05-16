@@ -40,30 +40,8 @@ const bool GameManager::isRunning() const
 
 void GameManager::update()
 {
-	//std::cout << "update\n";
 	while (window->pollEvent(ev))
-	{/*
-		std::cout << "ch = " << chosenFlag << std::endl;
-		if (chosenFlag == 1) {
-			std::cout << "1";
-			for (int i = 0; i < 9; i++)
-			{
-				if (Army[i].isClicked(sf::Vector2f(ev.mouseButton.x, ev.mouseButton.y))) {
-					chosen = &Army[i];
-					std::cout << i << '\n';
-					chosenFlag = true;
-					//continue;
-				}
-			}
-			if (ev.type == sf::Event::MouseButtonPressed && ev.mouseButton.button == sf::Mouse::Left)
-			{
-				std::cout << "2";
-				chosen->body.setPosition(ev.mouseButton.x-37.5, ev.mouseButton.y-37.5);
-				chosenFlag = false;
-				continue;
-			}
-		}
-		*/
+	{
 		Chess* clickChess = nullptr;
 		switch (ev.type)
 		{
@@ -79,6 +57,15 @@ void GameManager::update()
 		case sf::Event::KeyPressed:
 			if (ev.key.code == sf::Keyboard::Escape)
 				window->close();
+			if (ev.key.code == sf::Keyboard::Delete)
+			{
+				Point index = board.getChosenChessIndex();
+				if (index.x != -1 && index.y != -1)
+				{
+					board.removeChess(index);
+					board.setChosenChessIndex({ -1,-1 });
+				}
+			}
 			break;
 		}
 	}

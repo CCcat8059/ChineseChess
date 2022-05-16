@@ -32,7 +32,7 @@ Board::Board()
 			sf::Vector2f position = sf::Vector2f(54 + j * 87.5 - 37.5, 50 + i * 85.5 - 37.5);
 
 			if (nameTable[i][j] == "Empty") {
-				chessBoard[i][j] = new Empty(position, color);
+				chessBoard[i][j] = new Empty(position);
 			}
 			else if (nameTable[i][j] == "King") {
 				chessBoard[i][j] = new King(position, color);
@@ -58,7 +58,7 @@ Board::Board()
 		}
 	}
 
-	chosenChess = { -1,-1 };
+	chosenChessIndex = { -1,-1 };
 }
 
 Board::~Board()
@@ -78,25 +78,43 @@ Chess* Board::clickBoard(sf::Event& ev)
 		{
 			if (chessBoard[i][j]->isClicked(ev))
 			{
-				int tempX = chosenChess.x, tempY = chosenChess.y;
+				int tempX = chosenChessIndex.x, tempY = chosenChessIndex.y;
 				if (tempX != -1 && tempY != -1)
 				{
 					// swap
 					Chess* temp = chessBoard[i][j];
 					chessBoard[i][j] = chessBoard[tempX][tempY];
 					chessBoard[tempX][tempY] = temp;
+					swapChess(chessBoard[i][j], chessBoard[tempX][tempY]);
+					chosenChessIndex = { -1,-1 };
 					return temp;
 				}
-				else
+				else if (chessBoard[i][j]->getName() != "empty")
 				{
 					// store
-					chosenChess = { i,j };
+					chosenChessIndex = { i,j };
 					return chessBoard[i][j];
 				}
+				else // click on empty position
+					return chessBoard[i][j];
 			}
 		}
 	}
 	return nullptr;
+}
+
+void Board::swapChess(Chess* a, Chess* b)
+{
+	sf::Vector2f tempPos = a->getBody().getPosition();
+	a->getBody().setPosition(b->getBody().getPosition());
+	b->getBody().setPosition(tempPos);
+}
+
+void Board::removeChess(Point target)
+{
+	delete chessBoard[target.x][target.y];
+	sf::Vector2f position = sf::Vector2f(54 + target.y * 87.5 - 37.5, 50 + target.x * 85.5 - 37.5);
+	chessBoard[target.x][target.y] = new Empty(position);
 }
 
 void Board::drawBoard(sf::RenderWindow* window)

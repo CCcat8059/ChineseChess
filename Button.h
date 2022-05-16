@@ -18,7 +18,7 @@ public:
 	Button operator=(const Button&);
 	void setTexture(std::string);
 	bool isClicked(sf::Event&);
-	sf::Sprite getBody() { return body; }
+	sf::Sprite& getBody() { return body; }
 	std::string getName() { return name; }
 };
 
