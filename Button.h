@@ -19,15 +19,6 @@ public:
 	Button operator=(const Button&);
 	void setTexture(std::string);
 	bool isClicked(sf::Event&);
-	sf::Sprite getBody() { 
-		texture.setRepeated(true);
-		return body; 
-	}
+	sf::Sprite& getBody() { return body; }
 	std::string getName() { return name; }
-};
-
-class Point {
-public:
-	int x;
-	int y;
 };

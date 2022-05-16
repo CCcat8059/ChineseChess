@@ -41,7 +41,6 @@ const bool GameManager::isRunning() const
 
 void GameManager::update()
 {
-	//std::cout << "update\n";
 	while (window->pollEvent(ev))
 	{
 		Chess* clickChess = nullptr;
@@ -53,19 +52,23 @@ void GameManager::update()
 		case sf::Event::MouseButtonPressed:
 			// click Board
 			clickChess = board.clickBoard(ev);
-			//cout << clickChess->getPos().x << ", " << clickChess->getPos().y << " | " << clickChess->getName() << " (" << clickChess->getColor() << ")\n";
-			/*
-			for (auto& v : board.getChessBoard()) {
-				for (auto& c : v) {
-					cout << c->getName() <<"  ";
-				}
-				cout << endl;
+			if (clickChess != nullptr)
+			{
+				std::cout << clickChess->getName() << ' ' << clickChess->getColor() << "\n";
 			}
-			*/
 			break;
 		case sf::Event::KeyPressed:
 			if (ev.key.code == sf::Keyboard::Escape)
 				window->close();
+			if (ev.key.code == sf::Keyboard::Delete)
+			{
+				Point index = board.getChosenChessIndex();
+				if (index.x != -1 && index.y != -1)
+				{
+					board.removeChess(index);
+					board.setChosenChessIndex({ -1,-1 });
+				}
+			}
 			break;
 		}
 	}
