@@ -16,34 +16,7 @@ void check_mouse(const sf::Event& event)
 
 GameManager::GameManager()
 {
-	// Board init
-	sf::VideoMode videoMode(480, 500);
-	this->window = new sf::RenderWindow(videoMode, "Main menu", sf::Style::Titlebar | sf::Style::Close);
-
-	this->bgTexture.loadFromFile("image/board.jpg");
-	this->background = new sf::Sprite();
-	this->background->setTexture(bgTexture);
-	this->background->setPosition(20, 20);
-
-
-	this->titleTexture.loadFromFile("image/title.png");
-	this->title = new sf::Sprite();
-	this->title->setTexture(titleTexture);
-	this->title->setPosition(90, 30);
-
-	this->startButton.setName("start_button");
-	this->startButton.setPosition({ 117,150 });
-	this->startButton.setTexture("image/start_button.png");
-
-	this->loadButton.setName("load_button");
-	this->loadButton.setPosition({ 117,250 });
-	this->loadButton.setTexture("image/load_button.png");
-
-	this->exitButton.setName("exit_button");
-	this->exitButton.setPosition({ 117,350 });
-	this->exitButton.setTexture("image/exit_button.png");
-
-	this->flowControl = 0;
+	initMainPage();
 }
 
 GameManager::~GameManager()
@@ -70,10 +43,10 @@ void GameManager::update()
 			updateGamePage(); break;
 		case 2:
 			updateEndPage(); break;
-			/*
-			case 3:
-				updateReplayPage(); break;
-			*/
+		/*
+		case 3:
+			updateReplayPage(); break;
+		*/
 		}
 	}
 }
@@ -97,6 +70,31 @@ void GameManager::render()
 	window->display();
 }
 
+void GameManager::initMainPage()
+{
+	sf::VideoMode videoMode(480, 500);
+	this->window = new sf::RenderWindow(videoMode, "Main menu", sf::Style::Titlebar | sf::Style::Close);
+
+	this->titleTexture.loadFromFile("image/title.png");
+	this->title = new sf::Sprite();
+	this->title->setTexture(titleTexture);
+	this->title->setPosition(90, 30);
+
+	this->startButton.setName("start_button");
+	this->startButton.setPosition({ 117,150 });
+	this->startButton.setTexture("image/start_button.png");
+
+	this->loadButton.setName("load_button");
+	this->loadButton.setPosition({ 117,250 });
+	this->loadButton.setTexture("image/load_button.png");
+
+	this->exitButton.setName("exit_button");
+	this->exitButton.setPosition({ 117,350 });
+	this->exitButton.setTexture("image/exit_button.png");
+
+	this->flowControl = 0;
+}
+
 void GameManager::updateMainPage()
 {
 	switch (ev.type)
@@ -106,20 +104,39 @@ void GameManager::updateMainPage()
 		break;
 	case sf::Event::MouseButtonPressed:
 		std::cout << ev.mouseButton.x << " " << ev.mouseButton.y << '\n';
+		if (startButton.isClicked(ev))
+		{
+			flowControl = 1;	// enter game page
+			initGamePage();
+		}
+		else if (exitButton.isClicked(ev))
+		{
+			window->close();
+		}
+		else if (loadButton.isClicked(ev))
+		{
+			std::cout << "load button have been clicked.\n";
+		}
 		// start, replay and exit button
 		break;
 	case sf::Event::KeyPressed:
 		if (ev.key.code == sf::Keyboard::Escape)
 			window->close();
-		if (ev.key.code == sf::Keyboard::A)
-		{
-			flowControl = 1;	// enter game page
-			delete this->window;
-			sf::VideoMode videoMode(810, 875);
-			this->window = new sf::RenderWindow(videoMode, "ChineseChess", sf::Style::Titlebar | sf::Style::Close);
-		}
 		break;
 	}
+}
+
+void GameManager::initGamePage()
+{
+	if(this->window!=nullptr)
+		delete this->window;
+	sf::VideoMode videoMode(810, 875);
+	this->window = new sf::RenderWindow(videoMode, "ChineseChess", sf::Style::Titlebar | sf::Style::Close);
+	// Board init
+	this->bgTexture.loadFromFile("image/board.jpg");
+	this->background = new sf::Sprite();
+	this->background->setTexture(bgTexture);
+	this->background->setPosition(20, 20);
 }
 
 void GameManager::updateGamePage()
@@ -152,6 +169,10 @@ void GameManager::updateGamePage()
 		}
 		break;
 	}
+}
+
+void GameManager::initEndPage()
+{
 }
 
 void GameManager::updateEndPage()

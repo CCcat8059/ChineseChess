@@ -20,7 +20,10 @@ public:
 
 class Empty : public Chess {
 public:
-	Empty(sf::Vector2f position) : Button(position, "empty") {};
+	Empty(sf::Vector2f position) : Button(position, "empty") {
+		std::string path = "image/empty.png";
+		this->setTexture(path);
+	};
 };
 
 class King : public Chess {

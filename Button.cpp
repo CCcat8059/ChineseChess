@@ -58,7 +58,7 @@ bool Button::isClicked(sf::Event& ev)
 
 	sf::Vector2f clickPos = sf::Vector2f(ev.mouseButton.x, ev.mouseButton.y);
 	sf::Vector2f btnPos = body.getPosition();
-	sf::Vector2f btnEnd = btnPos + sf::Vector2f(75, 75);
+	sf::Vector2f btnEnd = btnPos + sf::Vector2f(texture.getSize().x, texture.getSize().y);
 
 	if (clickPos.x<btnPos.x || clickPos.x>btnEnd.x)
 		return false;

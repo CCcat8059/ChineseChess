@@ -7,7 +7,6 @@
 #include <vector>
 
 #include "Board.h"
-#include "Chess.h"
 #pragma once
 
 using namespace std;
@@ -35,8 +34,13 @@ public:
 	void update();
 	void render();
 
+	void initMainPage();
 	void updateMainPage();
+
+	void initGamePage();
 	void updateGamePage();
+
+	void initEndPage();
 	void updateEndPage();
 	// void updateReplayPage();
 
