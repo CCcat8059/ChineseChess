@@ -18,7 +18,7 @@ GameManager::GameManager()
 {
 	// Board init
 	
-	sf::VideoMode videoMode(810, 875);
+	sf::VideoMode videoMode(1500, 875);
 	this->window = new sf::RenderWindow(videoMode, "ChineseChess", sf::Style::Titlebar | sf::Style::Close);
 
 	this->bgTexture.loadFromFile("image/board.jpg");

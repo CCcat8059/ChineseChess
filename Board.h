@@ -4,7 +4,8 @@
 #include <iostream>
 #include <vector>
 #include <string>
-
+#define WIN32_LEAN_AND_MEAN
+#include <windows.h>
 
 #include "Chess.h"
 
@@ -17,6 +18,11 @@ private:
 	std::vector<std::vector<std::string> > nameTable;
 	// chessBoard store the class of chesses
 	std::vector<std::vector<Chess*>> chessBoard;
+	std::vector<std::string> removedChess; //removed chess img path
+	int removedCount = 0;
+	int roundCount = 0;
+	std::string checkmate = "";
+	std::string winner = "";
 public:
 	Board();
 	~Board();
