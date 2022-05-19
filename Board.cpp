@@ -81,7 +81,7 @@ Chess* Board::clickBoard(sf::Event& ev)
 				int tempX = chosenChessIndex.x, tempY = chosenChessIndex.y;
 				if (tempX != -1 && tempY != -1)
 				{
-					//²M°£´£¥Ü¥i¨«
+					//æ¸…é™¤æç¤ºå¯èµ°
 					for (int x = 0; x < chessBoard.size(); x++)
 					{
 						for (int y = 0; y < chessBoard[x].size(); y++)
@@ -89,15 +89,15 @@ Chess* Board::clickBoard(sf::Event& ev)
 							chessBoard[x][y]->canMove_flag = false;
 						}
 					}
-					// ¦pªG§PÂ_³o­Ó´Ñ¤lªºMove³W«h¡A¥i¥H²¾°Ê¨ì²{¦b¿ïªº¦ì¸m = > swap
+					// å¦‚æœåˆ¤æ–·é€™å€‹æ£‹å­çš„Moveè¦å‰‡ï¼Œå¯ä»¥ç§»å‹•åˆ°ç¾åœ¨é¸çš„ä½ç½® = > swap
 					if (chessBoard[tempX][tempY]->canMove(tempX, tempY, i, j, chessBoard) == true) {
-					
+
 						// if the color is opposite, eat it and swap
 						// otherwise just swap
 
 						std::string thitRoundColor;
 						thitRoundColor = roundCount % 2 == 0 ? "red" : "black";
-						//¦pªG¦Y±¼king´N§PÂ_Àò³Ó
+						//å¦‚æœåƒæ‰kingå°±åˆ¤æ–·ç²å‹
 					
 						if (chessBoard[i][j]->getName() == "king") {
 							winner = thitRoundColor;
@@ -114,14 +114,14 @@ Chess* Board::clickBoard(sf::Event& ev)
 
 					
 						
-						for (int _i = 0; _i < chessBoard.size(); _i++)//²¾°Ê§¹ÀË¬d¦P¦â¨C­Ó´Ñ¤l¬O§_³y¦¨±N­x
+						for (int _i = 0; _i < chessBoard.size(); _i++)//ç§»å‹•å®Œæª¢æŸ¥åŒè‰²æ¯å€‹æ£‹å­æ˜¯å¦é€ æˆå°‡è»
 						{
 							for (int _j = 0; _j < chessBoard[_i].size(); _j++)
 							{
 								if (chessBoard[_i][_j]->getColor() == thitRoundColor) {
 									Chess*  myChess = chessBoard[_i][_j];
 
-									for (int x = 0; x < chessBoard.size(); x++)//²¾°Ê§¹ÀË¬d¬O§_±N­x
+									for (int x = 0; x < chessBoard.size(); x++)//ç§»å‹•å®Œæª¢æŸ¥æ˜¯å¦å°‡è»
 									{
 										for (int y = 0; y < chessBoard[x].size(); y++)
 										{
@@ -138,7 +138,7 @@ Chess* Board::clickBoard(sf::Event& ev)
 						return temp;
 					}
 
-					// µLªk²¾°Ê¡A´NDo Nothing
+					// ç„¡æ³•ç§»å‹•ï¼Œå°±Do Nothing
 					else {
 						chosenChessIndex = { -1,-1 };
 						continue;
@@ -251,16 +251,16 @@ void Board::drawBoard(sf::RenderWindow* window)
 
 	if (checkmate != "") {
 		std::string msg;
-		if (checkmate == "red")msg = "¬õ¤è±N­x";
-		if (checkmate == "black")msg = "¶Â¤è±N­x";
-		MessageBoxA(NULL, msg.c_str(), "´£¥Ü", MB_OKCANCEL | MB_ICONEXCLAMATION);
+		if (checkmate == "red")msg = "ç´…æ–¹å°‡è»";
+		if (checkmate == "black")msg = "é»‘æ–¹å°‡è»";
+		MessageBoxA(NULL, msg.c_str(), "æç¤º", MB_OKCANCEL | MB_ICONEXCLAMATION);
 		checkmate="";
 	}
 	if (winner != "") {
 		std::string msg;
-		if (winner == "red")msg = "¬õ¤èÀò³Ó";
-		if (winner == "black")msg = "¶Â¤èÀò³Ó";
-		MessageBoxA(NULL, msg.c_str(), "´£¥Ü", MB_OKCANCEL | MB_ICONEXCLAMATION);
+		if (winner == "red")msg = "ç´…æ–¹ç²å‹";
+		if (winner == "black")msg = "é»‘æ–¹ç²å‹";
+		MessageBoxA(NULL, msg.c_str(), "æç¤º", MB_OKCANCEL | MB_ICONEXCLAMATION);
 		winner = "";
 	}
 }

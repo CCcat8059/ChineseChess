@@ -1,19 +1,5 @@
 #include "GameManager.h"
 
-void check_mouse(const sf::Event& event)
-{
-	if (event.type == sf::Event::MouseButtonPressed) { 
-		if (event.mouseButton.button == sf::Mouse::Right) {
-			std::cout << event.mouseButton.x << std::endl;
-			std::cout << event.mouseButton.y << std::endl;
-		}
-	}
-
-	if (event.type == sf::Event::MouseButtonReleased) {
-		std::cout << "realease" << std::endl;
-	}
-}
-
 GameManager::GameManager()
 {
 	// Board init
@@ -25,62 +11,62 @@ GameManager::GameManager()
 	this->background = new sf::Sprite();
 	this->background->setTexture(bgTexture);
 	this->background->setPosition(20, 20);
+	flowControl = 0;
+	viewer.initMainPage();
 }
 
 GameManager::~GameManager()
 {
-	delete this->window;
-	delete this->background;
-	//delete[] this->Army;
 }
 
 const bool GameManager::isRunning() const
 {
-	return window->isOpen();
+	return viewer.windowIsRunning();
 }
 
 void GameManager::update()
 {
-	while (window->pollEvent(ev))
+	while (viewer.getWindow().pollEvent(ev))
 	{
-		Chess* clickChess = nullptr;
-		switch (ev.type)
+		int temp = 0;
+		switch (flowControl)
 		{
-		case sf::Event::Closed:
-			window->close();
-			break;
-		case sf::Event::MouseButtonPressed:
-			// click Board
-			clickChess = board.clickBoard(ev);
-			if (clickChess != nullptr)
+		case 0:
+			temp = viewer.updateMainPage(ev); break;
+		case 1:
+			temp = viewer.updateGamePage(ev, &board); break;
+		case 2:
+			temp = viewer.updateEndPage(ev); break;
+			/*
+			case 3:
+				updateReplayPage(); break;
+			*/
+		}
+		if (flowControl != temp)
+		{
+			switch (temp)
 			{
-				std::cout << clickChess->getName() << ' ' << clickChess->getColor() << "\n";
+			case 0:
+				viewer.initMainPage(); break;
+			case 1:
+				viewer.initGamePage(); break;
+			case 2:
+				viewer.initEndPage(); break;
 			}
-			break;
-		case sf::Event::KeyPressed:
-			if (ev.key.code == sf::Keyboard::Escape)
-				window->close();
-			if (ev.key.code == sf::Keyboard::Delete)
-			{
-				Point index = board.getChosenChessIndex();
-				if (index.x != -1 && index.y != -1)
-				{
-					board.removeChess(index);
-					board.setChosenChessIndex({ -1,-1 });
-				}
-			}
-			break;
+			flowControl = temp;
 		}
 	}
 }
 
 void GameManager::render()
 {
-	window->clear(sf::Color::White);
-	window->draw(*this->background);
-
-	// draw Board
-	board.update();
-	board.drawBoard(window);
-	window->display();
+	switch (flowControl)
+	{	
+	case 0:
+		viewer.showMainPage(); break;
+	case 1:
+		viewer.showGamePage(&board); break;
+	case 2:
+		viewer.showEndPage(); break;
+	}
 }
