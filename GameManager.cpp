@@ -1,181 +1,63 @@
 #include "GameManager.h"
 
-void check_mouse(const sf::Event& event)
-{
-	if (event.type == sf::Event::MouseButtonPressed) {
-		if (event.mouseButton.button == sf::Mouse::Right) {
-			std::cout << event.mouseButton.x << std::endl;
-			std::cout << event.mouseButton.y << std::endl;
-		}
-	}
-
-	if (event.type == sf::Event::MouseButtonReleased) {
-		std::cout << "realease" << std::endl;
-	}
-}
-
 GameManager::GameManager()
 {
-	initMainPage();
+	flowControl = 0;
+	viewer.initMainPage();
 }
 
 GameManager::~GameManager()
 {
-	delete this->window;
-	delete this->background;
-	delete this->title;
 }
 
 const bool GameManager::isRunning() const
 {
-	return window->isOpen();
+	return viewer.windowIsRunning();
 }
 
 void GameManager::update()
 {
-	while (window->pollEvent(ev))
+	while (viewer.getWindow().pollEvent(ev))
 	{
+		int temp = 0;
 		switch (flowControl)
 		{
 		case 0:
-			updateMainPage(); break;
+			temp = viewer.updateMainPage(ev); break;
 		case 1:
-			updateGamePage(); break;
+			temp = viewer.updateGamePage(ev, &board); break;
 		case 2:
-			updateEndPage(); break;
-		/*
-		case 3:
-			updateReplayPage(); break;
-		*/
+			temp = viewer.updateEndPage(ev); break;
+			/*
+			case 3:
+				updateReplayPage(); break;
+			*/
+		}
+		if (flowControl != temp)
+		{
+			switch (temp)
+			{
+			case 0:
+				viewer.initMainPage(); break;
+			case 1:
+				viewer.initGamePage(); break;
+			case 2:
+				viewer.initEndPage(); break;
+			}
+			flowControl = temp;
 		}
 	}
 }
 
 void GameManager::render()
 {
-	window->clear(sf::Color::White);
-	if (flowControl == 0)
-	{
-		window->draw(*title);
-		window->draw(startButton.getBody());
-		window->draw(loadButton.getBody());
-		window->draw(exitButton.getBody());
-	}
-	else if (flowControl == 1)
-	{
-		// draw Board
-		window->draw(*this->background);
-		board.drawBoard(window);
-	}
-	window->display();
-}
-
-void GameManager::initMainPage()
-{
-	sf::VideoMode videoMode(480, 500);
-	this->window = new sf::RenderWindow(videoMode, "Main menu", sf::Style::Titlebar | sf::Style::Close);
-
-	this->titleTexture.loadFromFile("image/title.png");
-	this->title = new sf::Sprite();
-	this->title->setTexture(titleTexture);
-	this->title->setPosition(90, 30);
-
-	this->startButton.setName("start_button");
-	this->startButton.setPosition({ 117,150 });
-	this->startButton.setTexture("image/start_button.png");
-
-	this->loadButton.setName("load_button");
-	this->loadButton.setPosition({ 117,250 });
-	this->loadButton.setTexture("image/load_button.png");
-
-	this->exitButton.setName("exit_button");
-	this->exitButton.setPosition({ 117,350 });
-	this->exitButton.setTexture("image/exit_button.png");
-
-	this->flowControl = 0;
-}
-
-void GameManager::updateMainPage()
-{
-	switch (ev.type)
-	{
-	case sf::Event::Closed:
-		window->close();
-		break;
-	case sf::Event::MouseButtonPressed:
-		std::cout << ev.mouseButton.x << " " << ev.mouseButton.y << '\n';
-		if (startButton.isClicked(ev))
-		{
-			flowControl = 1;	// enter game page
-			initGamePage();
-		}
-		else if (exitButton.isClicked(ev))
-		{
-			window->close();
-		}
-		else if (loadButton.isClicked(ev))
-		{
-			std::cout << "load button have been clicked.\n";
-		}
-		// start, replay and exit button
-		break;
-	case sf::Event::KeyPressed:
-		if (ev.key.code == sf::Keyboard::Escape)
-			window->close();
-		break;
+	switch (flowControl)
+	{	
+	case 0:
+		viewer.showMainPage(); break;
+	case 1:
+		viewer.showGamePage(&board); break;
+	case 2:
+		viewer.showEndPage(); break;
 	}
 }
-
-void GameManager::initGamePage()
-{
-	if(this->window!=nullptr)
-		delete this->window;
-	sf::VideoMode videoMode(810, 875);
-	this->window = new sf::RenderWindow(videoMode, "ChineseChess", sf::Style::Titlebar | sf::Style::Close);
-	// Board init
-	this->bgTexture.loadFromFile("image/board.jpg");
-	this->background = new sf::Sprite();
-	this->background->setTexture(bgTexture);
-	this->background->setPosition(20, 20);
-}
-
-void GameManager::updateGamePage()
-{
-	Chess* clickChess = nullptr;
-	switch (ev.type)
-	{
-	case sf::Event::Closed:
-		window->close();
-		break;
-	case sf::Event::MouseButtonPressed:
-		// click Board
-		clickChess = board.clickBoard(ev);
-		if (clickChess != nullptr)
-		{
-			std::cout << clickChess->getName() << ' ' << clickChess->getColor() << "\n";
-		}
-		break;
-	case sf::Event::KeyPressed:
-		if (ev.key.code == sf::Keyboard::Escape)
-			window->close();
-		if (ev.key.code == sf::Keyboard::Delete)
-		{
-			Point index = board.getChosenChessIndex();
-			if (index.x != -1 && index.y != -1)
-			{
-				board.removeChess(index);
-				board.setChosenChessIndex({ -1,-1 });
-			}
-		}
-		break;
-	}
-}
-
-void GameManager::initEndPage()
-{
-}
-
-void GameManager::updateEndPage()
-{
-}
-
