@@ -137,12 +137,3 @@ void Board::drawBoard(sf::RenderWindow* window)
 		for (auto& c : v)
 			window->draw(c->getBody());
 }
-
-void Board::update()
-{
-	for (auto& v : chessBoard) {
-		for (auto& c : v) {
-			c->update();
-		}
-	}
-}
