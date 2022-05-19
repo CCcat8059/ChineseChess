@@ -35,6 +35,16 @@ Button Button::operator=(const Button& target)
 	return Button(target);
 }
 
+void Button::setPosition(sf::Vector2f position)
+{
+	body.setPosition(position.x, position.y);
+}
+
+void Button::setName(std::string name)
+{
+	this->name = name;
+}
+
 void Button::setTexture(std::string path)
 {
 	texture.loadFromFile(path);

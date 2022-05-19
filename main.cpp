@@ -1,10 +1,7 @@
 #include "GameManager.h"
-#include "Button.h"
-
 
 int main()
 {
-	// test cccat
 	GameManager game;
 
 	while (game.isRunning())

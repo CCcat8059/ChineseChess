@@ -15,6 +15,7 @@ using namespace std;
 class GameManager
 {
 private:
+	int flowControl;
 	sf::RenderWindow* window;
 	sf::Event ev;
 
@@ -22,6 +23,10 @@ private:
 	sf::Sprite* background;
 
 	Board board;
+
+	sf::Texture titleTexture;
+	sf::Sprite* title;
+	Button startButton, exitButton, loadButton;
 public:
 	GameManager();
 	~GameManager();
@@ -29,6 +34,11 @@ public:
 	const bool isRunning() const;
 	void update();
 	void render();
+
+	void updateMainPage();
+	void updateGamePage();
+	void updateEndPage();
+	// void updateReplayPage();
 
 
 	friend void check_mouse(const sf::Event& event);
