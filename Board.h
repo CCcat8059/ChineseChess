@@ -29,5 +29,4 @@ public:
 	void removeChess(Point);
 	void drawBoard(sf::RenderWindow*);
 	std::vector<std::vector<Chess*> > getChessBoard() { return chessBoard; }
-	void update();
 };

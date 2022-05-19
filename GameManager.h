@@ -1,32 +1,14 @@
-﻿#include <SFML/Graphics.hpp>
-#include <SFML/Network.hpp>
-#include <SFML/Window.hpp>
-#include <SFML/System.hpp>
-#include <SFML/Audio.hpp>
-#include <iostream>
-#include <vector>
-
+﻿#pragma once
+#include "Viewer.h"
 #include "Board.h"
-#include "Chess.h"
-#pragma once
-
-using namespace std;
 
 class GameManager
 {
 private:
 	int flowControl;
-	sf::RenderWindow* window;
 	sf::Event ev;
-
-	sf::Texture bgTexture;
-	sf::Sprite* background;
-
 	Board board;
-
-	sf::Texture titleTexture;
-	sf::Sprite* title;
-	Button startButton, exitButton, loadButton;
+	Viewer viewer;
 public:
 	GameManager();
 	~GameManager();
@@ -34,14 +16,6 @@ public:
 	const bool isRunning() const;
 	void update();
 	void render();
-
-	void updateMainPage();
-	void updateGamePage();
-	void updateEndPage();
-	// void updateReplayPage();
-
-
-	friend void check_mouse(const sf::Event& event);
 };
 
 /*
