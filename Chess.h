@@ -16,6 +16,7 @@ public:
 	void update() {
 		std::string path = "image/" + color + "/" + name + ".png";
 	}
+	bool canMove_flag = false;
 };
 
 class Empty : public Chess {

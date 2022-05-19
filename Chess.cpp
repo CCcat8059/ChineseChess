@@ -4,9 +4,36 @@
 
 bool King::canMove(int x1, int y1, int x2, int y2, std::vector<std::vector<Chess*>> chessBoard)
 {
+	// 尋找帥(rkX, rkY)跟將(bkX, bkY)
+	int rkX, rkY, bkX, bkY;
+	for (int b = 0, r = 7; b <= 2; b++, r++) {
+		for (int j = 3; j <= 5; j++) {
+			if (chessBoard[b][j]->getName() == "king") {
+				bkX = b;
+				bkY = j;
+			}
+			if (chessBoard[r][j]->getName() == "king") {
+				rkX = r;
+				rkY = j;
+			}
+		}
+	}
+	int countChess = 0;
+	if (rkY == bkY) { // 如果兩王在同一條直線上
+		for (int i = bkX + 1; i < rkX; i++) {
+			if (chessBoard[i][rkY]->getName() != "empty") countChess++;
+		}
+		if (countChess == 0) { // 王見王成立
+			if ((x2 == bkX && y2 == bkY) || (x2 == rkX && y2 == rkY))return true;
+		}
+	}
+	
+
 	if (y2 >= 3 && y2 <= 5) {
 		if (color == "red") {
 			if (chessBoard[x2][y2]->getColor() != color) {
+				
+
 				if (x2 >= 7 && x2 <= 9) {
 					if (abs(x1 - x2 + y1 - y2) == 1) {
 						return true;
