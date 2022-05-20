@@ -98,7 +98,7 @@ Chess* Board::clickBoard(sf::Event& ev)
 						std::string thitRoundColor;
 						thitRoundColor = roundCount % 2 == 0 ? "red" : "black";
 						//如果吃掉king就判斷獲勝
-					
+
 						if (chessBoard[i][j]->getName() == "king") {
 							winner = thitRoundColor;
 							return chessBoard[i][j];
@@ -112,14 +112,14 @@ Chess* Board::clickBoard(sf::Event& ev)
 						swapChess(chessBoard[i][j], chessBoard[tempX][tempY]);
 						chosenChessIndex = { -1,-1 };
 
-					
-						
+
+
 						for (int _i = 0; _i < chessBoard.size(); _i++)//移動完檢查同色每個棋子是否造成將軍
 						{
 							for (int _j = 0; _j < chessBoard[_i].size(); _j++)
 							{
 								if (chessBoard[_i][_j]->getColor() == thitRoundColor) {
-									Chess*  myChess = chessBoard[_i][_j];
+									Chess* myChess = chessBoard[_i][_j];
 
 									for (int x = 0; x < chessBoard.size(); x++)//移動完檢查是否將軍
 									{
@@ -127,7 +127,7 @@ Chess* Board::clickBoard(sf::Event& ev)
 										{
 											if (myChess->canMove(_i, _j, x, y, chessBoard) && chessBoard[x][y]->getName() == "king") {
 												checkmate = thitRoundColor;
-												
+
 											}
 										}
 									}
@@ -168,7 +168,7 @@ Chess* Board::clickBoard(sf::Event& ev)
 					{
 						for (int y = 0; y < chessBoard[x].size(); y++)
 						{
-							chessBoard[x][y]->canMove_flag =false;
+							chessBoard[x][y]->canMove_flag = false;
 						}
 					}
 					return chessBoard[i][j];
@@ -189,87 +189,10 @@ void Board::swapChess(Chess* a, Chess* b)
 void Board::removeChess(Point target)
 {
 	if (chessBoard[target.x][target.y]->getName() != "empty") {
-		std::string path= "image/" + chessBoard[target.x][target.y]->getColor() + "/" + chessBoard[target.x][target.y]->getName() + ".png";
-		removedChess.push_back(path);
-		removedCount++;
+		std::string path = "image/" + chessBoard[target.x][target.y]->getColor() + "/" + chessBoard[target.x][target.y]->getName() + ".png";
+		removedChesses.push_back(path);
 	}
 	delete chessBoard[target.x][target.y];
 	sf::Vector2f position = sf::Vector2f(54 + target.y * 87.5 - 37.5, 50 + target.x * 85.5 - 37.5);
 	chessBoard[target.x][target.y] = new Empty(position);
-	
-}
-
-void Board::drawBoard(sf::RenderWindow* window)
-{
-	for (auto& v : chessBoard)
-		for (auto& c : v) {
-			sf::Sprite sp = c->getBody();
-			
-			if(c->canMove_flag){
-				if (c->getName() == "empty") {
-					sf::CircleShape shape(37.f);
-					shape.setPosition(sp.getPosition());
-					shape.setFillColor(sf::Color::Color(255,0,0,120));
-					
-					window->draw(shape);
-					continue;
-
-				}
-				else {
-					sp.setColor(sf::Color::Red);
-					window->draw(sp);
-					
-				}
-				
-			}
-			
-			window->draw(sp);
-		}
-	for (int i = 0; i < removedCount; i++) {
-		std::string path = removedChess[i];
-		sf::Vector2f position = sf::Vector2f(850+(i/8)*100,75+(i%8)*100);
-		sf::Texture texture;
-		texture.loadFromFile(path);
-		sf::Sprite sp ;
-		sp.setTexture(texture);
-		sp.setPosition(position);
-		window->draw(sp);
-	}
-
-	std::string thitRoundColor;
-	thitRoundColor = roundCount % 2 == 0 ? "red" : "black";
-	sf::Font font;
-	font.loadFromFile("font/arial.ttf");
-	sf::Text text;
-	text.setFont(font);
-	text.setString("Current Player : "+ thitRoundColor);
-	sf::Vector2f position = sf::Vector2f(850 , 10);
-	text.setPosition(position);
-	text.setCharacterSize(50); // in pixels, not points!
-	text.setFillColor(sf::Color::Black);
-	window->draw(text);
-
-	if (checkmate != "") {
-		std::string msg;
-		if (checkmate == "red")msg = "紅方將軍";
-		if (checkmate == "black")msg = "黑方將軍";
-		MessageBoxA(NULL, msg.c_str(), "提示", MB_OKCANCEL | MB_ICONEXCLAMATION);
-		checkmate="";
-	}
-	if (winner != "") {
-		std::string msg;
-		if (winner == "red")msg = "紅方獲勝";
-		if (winner == "black")msg = "黑方獲勝";
-		MessageBoxA(NULL, msg.c_str(), "提示", MB_OKCANCEL | MB_ICONEXCLAMATION);
-		winner = "";
-	}
-}
-
-void Board::update()
-{
-	for (auto& v : chessBoard) {
-		for (auto& c : v) {
-			c->update();
-		}
-	}
 }
