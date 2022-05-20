@@ -108,7 +108,7 @@ int Viewer::updateGamePage(sf::Event ev, Board* board)
 		break;
 	case sf::Event::MouseButtonPressed:
 		// click Board
-		clickChess = board->clickBoard(ev);
+		clickChess = board->clickBoard(ev,window);
 		if (clickChess != nullptr)
 		{
 			std::cout << clickChess->getName() << ' ' << clickChess->getColor() << "\n";

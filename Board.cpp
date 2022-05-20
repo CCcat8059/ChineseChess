@@ -70,7 +70,7 @@ Board::~Board()
 	}
 }
 
-Chess* Board::clickBoard(sf::Event& ev)
+Chess* Board::clickBoard(sf::Event& ev, sf::RenderWindow* window)
 {
 	for (int i = 0; i < chessBoard.size(); i++)
 	{
@@ -89,11 +89,35 @@ Chess* Board::clickBoard(sf::Event& ev)
 							chessBoard[x][y]->canMove_flag = false;
 						}
 					}
+					
 					// 如果判斷這個棋子的Move規則，可以移動到現在選的位置 = > swap
 					if (chessBoard[tempX][tempY]->canMove(tempX, tempY, i, j, chessBoard) == true) {
 
 						// if the color is opposite, eat it and swap
 						// otherwise just swap
+						sf::Texture tmpTexture;
+						tmpTexture.create(window->getSize().x, window->getSize().y);
+						tmpTexture.update(*window);
+
+						for (int frame = 0; frame < 75; frame++) {
+
+							int step_x = ((chessBoard[i][j]->getBody().getPosition().x) - (chessBoard[tempX][tempY]->getBody().getPosition().x)) / 75;
+							int step_y = ((chessBoard[i][j]->getBody().getPosition().y) - (chessBoard[tempX][tempY]->getBody().getPosition().y)) / 75;
+							sf::Vector2f position = sf::Vector2f((chessBoard[tempX][tempY]->getBody().getPosition().x) + step_x * frame, (chessBoard[tempX][tempY]->getBody().getPosition().y) + step_y * frame);
+
+							sf::Sprite sp;
+							sp = chessBoard[tempX][tempY]->getBody();
+							sp.setPosition(position);
+
+							window->clear();
+							sf::Sprite sp_bg;
+							sp_bg.setTexture(tmpTexture);
+							window->draw(sp_bg);
+							window->draw(sp);
+							window->display();
+							sf::Time delayTime = sf::milliseconds(2);
+							sf::sleep(delayTime);
+						}
 
 						std::string thitRoundColor;
 						thitRoundColor = roundCount % 2 == 0 ? "red" : "black";
