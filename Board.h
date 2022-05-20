@@ -34,7 +34,7 @@ public:
 	void setCheckmate(std::string checkmate) { this->checkmate = checkmate; };
 	std::string getWinner() { return winner; };
 	void setChosenChessIndex(Point p) { chosenChessIndex = { p.x,p.y }; };
-	Chess* clickBoard(sf::Event&, sf::RenderWindow* window);
+	Chess* clickBoard(sf::Event&, sf::RenderWindow*);
 	void swapChess(Chess*, Chess*);
 	void removeChess(Point);
 	std::vector<std::vector<Chess*> > getChessBoard() { return chessBoard; }

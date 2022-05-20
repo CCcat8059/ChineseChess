@@ -1,10 +1,10 @@
-#include "Chess.h"
+ï»¿#include "Chess.h"
 
 // TODO every chesses' move
 
 bool King::canMove(int x1, int y1, int x2, int y2, std::vector<std::vector<Chess*>> chessBoard)
 {
-	// ´M§ä«Ó(rkX, rkY)¸ò±N(bkX, bkY)
+	// ï¿½Mï¿½ï¿½ï¿½(rkX, rkY)ï¿½ï¿½N(bkX, bkY)
 	int rkX, rkY, bkX, bkY;
 	for (int b = 0, r = 7; b <= 2; b++, r++) {
 		for (int j = 3; j <= 5; j++) {
@@ -19,20 +19,20 @@ bool King::canMove(int x1, int y1, int x2, int y2, std::vector<std::vector<Chess
 		}
 	}
 	int countChess = 0;
-	if (rkY == bkY) { // ¦pªG¨â¤ý¦b¦P¤@±øª½½u¤W
+	if (rkY == bkY) { // ï¿½pï¿½Gï¿½ï¿½ï¿½ï¿½bï¿½Pï¿½@ï¿½ï¿½ï¿½ï¿½ï¿½uï¿½W
 		for (int i = bkX + 1; i < rkX; i++) {
 			if (chessBoard[i][rkY]->getName() != "empty") countChess++;
 		}
-		if (countChess == 0) { // ¤ý¨£¤ý¦¨¥ß
+		if (countChess == 0) { // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 			if ((x2 == bkX && y2 == bkY) || (x2 == rkX && y2 == rkY))return true;
 		}
 	}
-	
+
 
 	if (y2 >= 3 && y2 <= 5) {
 		if (color == "red") {
 			if (chessBoard[x2][y2]->getColor() != color) {
-				
+
 
 				if (x2 >= 7 && x2 <= 9) {
 					if (abs(x1 - x2 + y1 - y2) == 1) {
@@ -86,24 +86,24 @@ bool Elephant::canMove(int x1, int y1, int x2, int y2, std::vector<std::vector<C
 			if (chessBoard[x2][y2]->getColor() != color) {
 				if (x2 >= 5 && x2 <= 9) {
 					if (abs(x1 - x2) + abs(y1 - y2) == 4) {
-						// ¦pªG¥Ð¦r¤¤¶¡¦³´Ñ¤l´N¤£¯à¨«
-						if (x1 > x2 && y1 < y2) { // ©¹¥k¤W¨«
-							if (chessBoard[x1-1][y1+1]->getName() == "empty") {
-								return true;
-							}
-						} 
-						if (x1> x2 && y1 > y2){ // ©¹¥ª¤W¨«
-							if (chessBoard[x1-1][y1-1]->getName() == "empty") {
+						// ï¿½pï¿½Gï¿½Ð¦rï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ñ¤lï¿½Nï¿½ï¿½ï¿½à¨«
+						if (x1 > x2 && y1 < y2) { // ï¿½ï¿½ï¿½kï¿½Wï¿½ï¿½
+							if (chessBoard[x1 - 1][y1 + 1]->getName() == "empty") {
 								return true;
 							}
 						}
-						if (x1 < x2 && y1 < y2) { // ©¹¥k¤U¨«
-							if (chessBoard[x1+1][y1+1]->getName() == "empty") {
+						if (x1 > x2 && y1 > y2) { // ï¿½ï¿½ï¿½ï¿½ï¿½Wï¿½ï¿½
+							if (chessBoard[x1 - 1][y1 - 1]->getName() == "empty") {
 								return true;
 							}
 						}
-						if (x1 < x2 && y1 > y2) { // ©¹¥ª¤U¨«
-							if (chessBoard[x1+1][y1-1]->getName() == "empty") {
+						if (x1 < x2 && y1 < y2) { // ï¿½ï¿½ï¿½kï¿½Uï¿½ï¿½
+							if (chessBoard[x1 + 1][y1 + 1]->getName() == "empty") {
+								return true;
+							}
+						}
+						if (x1 < x2 && y1 > y2) { // ï¿½ï¿½ï¿½ï¿½ï¿½Uï¿½ï¿½
+							if (chessBoard[x1 + 1][y1 - 1]->getName() == "empty") {
 								return true;
 							}
 						}
@@ -115,23 +115,23 @@ bool Elephant::canMove(int x1, int y1, int x2, int y2, std::vector<std::vector<C
 			if (chessBoard[x2][y2]->getColor() != color) {
 				if (x2 >= 0 && x2 <= 4) {
 					if (abs(x1 - x2) + abs(y1 - y2) == 4) {
-						// ¦pªG¥Ð¦r¤¤¶¡¦³´Ñ¤l´N¤£¯à¨«
-						if (x1 > x2 && y1 < y2) { // ©¹¥k¤W¨«
+						// ï¿½pï¿½Gï¿½Ð¦rï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ñ¤lï¿½Nï¿½ï¿½ï¿½à¨«
+						if (x1 > x2 && y1 < y2) { // ï¿½ï¿½ï¿½kï¿½Wï¿½ï¿½
 							if (chessBoard[x1 - 1][y1 + 1]->getName() == "empty") {
 								return true;
 							}
 						}
-						if (x1 > x2 && y1 > y2) { // ©¹¥ª¤W¨«
+						if (x1 > x2 && y1 > y2) { // ï¿½ï¿½ï¿½ï¿½ï¿½Wï¿½ï¿½
 							if (chessBoard[x1 - 1][y1 - 1]->getName() == "empty") {
 								return true;
 							}
 						}
-						if (x1 < x2 && y1 < y2) { // ©¹¥k¤U¨«
+						if (x1 < x2 && y1 < y2) { // ï¿½ï¿½ï¿½kï¿½Uï¿½ï¿½
 							if (chessBoard[x1 + 1][y1 + 1]->getName() == "empty") {
 								return true;
 							}
 						}
-						if (x1 < x2 && y1 > y2) { // ©¹¥ª¤U¨«
+						if (x1 < x2 && y1 > y2) { // ï¿½ï¿½ï¿½ï¿½ï¿½Uï¿½ï¿½
 							if (chessBoard[x1 + 1][y1 - 1]->getName() == "empty") {
 								return true;
 							}
@@ -151,31 +151,31 @@ bool Horse::canMove(int x1, int y1, int x2, int y2, std::vector<std::vector<Ches
 			if (chessBoard[x2][y2]->getColor() != color) {
 				if (x2 >= 0 && x2 <= 9) {
 					if (abs(x1 - x2) + abs(y1 - y2) == 3) {
-						// ¤£¯à³Q¥d¨ì°¨¸}
-						if (abs(x1 - x2) == 1) { // ¥ª¸ò¥k
-							if (y1 < y2) { // ©¹¥k
+						// ï¿½ï¿½ï¿½ï¿½Qï¿½dï¿½ì°¨ï¿½}
+						if (abs(x1 - x2) == 1) { // ï¿½ï¿½ï¿½ï¿½k
+							if (y1 < y2) { // ï¿½ï¿½ï¿½k
 								if (chessBoard[x1][y1 + 1]->getName() == "empty") {
 									return true;
 								}
 							}
-							if (y1 > y2) { // ©¹¥ª
+							if (y1 > y2) { // ï¿½ï¿½ï¿½ï¿½
 								if (chessBoard[x1][y1 - 1]->getName() == "empty") {
 									return true;
 								}
 							}
 						}
-						if (abs(y1 - y2) == 1) { // ¤W¸ò¤U
-							if (x1 > x2) { // ©¹¤W
+						if (abs(y1 - y2) == 1) { // ï¿½Wï¿½ï¿½U
+							if (x1 > x2) { // ï¿½ï¿½ï¿½W
 								if (chessBoard[x1 - 1][y1]->getName() == "empty") {
 									return true;
 								}
 							}
-							if (x1 < x2) { // ©¹¤U
+							if (x1 < x2) { // ï¿½ï¿½ï¿½U
 								if (chessBoard[x1 + 1][y1]->getName() == "empty") {
 									return true;
 								}
 							}
-						}			
+						}
 					}
 				}
 			}
@@ -184,23 +184,23 @@ bool Horse::canMove(int x1, int y1, int x2, int y2, std::vector<std::vector<Ches
 			if (chessBoard[x2][y2]->getColor() != color) {
 				if (x2 >= 0 && x2 <= 9) {
 					if (abs(x1 - x2) + abs(y1 - y2) == 3) {
-						// ¦pªG¥Ð¦r¤¤¶¡¦³´Ñ¤l´N¤£¯à¨«
-						if (x1 > x2 && y1 < y2) { // ©¹¥k¤W¨«
+						// ï¿½pï¿½Gï¿½Ð¦rï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ñ¤lï¿½Nï¿½ï¿½ï¿½à¨«
+						if (x1 > x2 && y1 < y2) { // ï¿½ï¿½ï¿½kï¿½Wï¿½ï¿½
 							if (chessBoard[x1 - 1][y1 + 1]->getName() == "empty") {
 								return true;
 							}
 						}
-						if (x1 > x2 && y1 > y2) { // ©¹¥ª¤W¨«
+						if (x1 > x2 && y1 > y2) { // ï¿½ï¿½ï¿½ï¿½ï¿½Wï¿½ï¿½
 							if (chessBoard[x1 - 1][y1 - 1]->getName() == "empty") {
 								return true;
 							}
 						}
-						if (x1 < x2 && y1 < y2) { // ©¹¥k¤U¨«
+						if (x1 < x2 && y1 < y2) { // ï¿½ï¿½ï¿½kï¿½Uï¿½ï¿½
 							if (chessBoard[x1 + 1][y1 + 1]->getName() == "empty") {
 								return true;
 							}
 						}
-						if (x1 < x2 && y1 > y2) { // ©¹¥ª¤U¨«
+						if (x1 < x2 && y1 > y2) { // ï¿½ï¿½ï¿½ï¿½ï¿½Uï¿½ï¿½
 							if (chessBoard[x1 + 1][y1 - 1]->getName() == "empty") {
 								return true;
 							}
@@ -215,31 +215,31 @@ bool Horse::canMove(int x1, int y1, int x2, int y2, std::vector<std::vector<Ches
 
 bool Chariot::canMove(int x1, int y1, int x2, int y2, std::vector<std::vector<Chess*>> chessBoard)
 {
-	// §PÂ_­n¥hªºÂI¡A¥u¯à¬Oempty©Î¬O¤£¦PªºÃC¦â
+	// ï¿½Pï¿½_ï¿½nï¿½hï¿½ï¿½ï¿½Iï¿½Aï¿½uï¿½ï¿½Oemptyï¿½Î¬Oï¿½ï¿½ï¿½Pï¿½ï¿½ï¿½Cï¿½ï¿½
 	if (chessBoard[x2][y2]->getColor() != color) {
-		// §PÂ_¨âÂI¤§¶¡¬O§_ª½½u
+		// ï¿½Pï¿½_ï¿½ï¿½ï¿½Iï¿½ï¿½ï¿½ï¿½ï¿½Oï¿½_ï¿½ï¿½ï¿½u
 		if ((x1 == x2 && y1 != y2) || (x1 != x2 && y1 == y2)) {
-			// ¦A§PÂ_¤§¶¡¬O§_¦³´Ñ¤l
-			if (x1 == x2) { // ¾îªº
-				if (y1 < y2) { // ©¹¥k
+			// ï¿½Aï¿½Pï¿½_ï¿½ï¿½ï¿½ï¿½ï¿½Oï¿½_ï¿½ï¿½ï¿½Ñ¤l
+			if (x1 == x2) { // ï¿½îªº
+				if (y1 < y2) { // ï¿½ï¿½ï¿½k
 					for (int i = y1 + 1; i < y2; i++) {
 						if (chessBoard[x1][i]->getName() != "empty") return false;
 					}
 				}
-				if (y1 > y2) { // ©¹¥ª
+				if (y1 > y2) { // ï¿½ï¿½ï¿½ï¿½
 					for (int i = y1 - 1; i > y2; i--) {
 						if (chessBoard[x1][i]->getName() != "empty") return false;
 					}
 				}
 
 			}
-			if (y1 == y2) { // ¾îªº
-				if (x1 < x2) { // ©¹¤U
+			if (y1 == y2) { // ï¿½îªº
+				if (x1 < x2) { // ï¿½ï¿½ï¿½U
 					for (int i = x1 + 1; i < x2; i++) {
 						if (chessBoard[i][y1]->getName() != "empty") return false;
 					}
 				}
-				if (x1 > x2) { // ©¹¥ª
+				if (x1 > x2) { // ï¿½ï¿½ï¿½ï¿½
 					for (int i = x1 - 1; i > x2; i--) {
 						if (chessBoard[i][y1]->getName() != "empty") return false;
 					}
@@ -249,39 +249,39 @@ bool Chariot::canMove(int x1, int y1, int x2, int y2, std::vector<std::vector<Ch
 		}
 	}
 	return false;
-	
+
 }
 
 bool Cannon::canMove(int x1, int y1, int x2, int y2, std::vector<std::vector<Chess*>> chessBoard)
 {
-	// §PÂ_­n¥hªºÂI¡A
+	// ï¿½Pï¿½_ï¿½nï¿½hï¿½ï¿½ï¿½Iï¿½A
 	if (chessBoard[x2][y2]->getColor() != color) {
-		// §PÂ_¨âÂI¤§¶¡¬O§_ª½½u
+		// ï¿½Pï¿½_ï¿½ï¿½ï¿½Iï¿½ï¿½ï¿½ï¿½ï¿½Oï¿½_ï¿½ï¿½ï¿½u
 		if ((x1 == x2 && y1 != y2) || (x1 != x2 && y1 == y2)) {
-			// ¦A§PÂ_¤§¶¡¬O§_¦³´Ñ¤l
-			if (x1 == x2) { // ¾îªº
-				if (y1 < y2) { // ©¹¥k
-					if (chessBoard[x2][y2]->getName() == "empty") { // ­n¥hªºÂI¬Oempty
+			// ï¿½Aï¿½Pï¿½_ï¿½ï¿½ï¿½ï¿½ï¿½Oï¿½_ï¿½ï¿½ï¿½Ñ¤l
+			if (x1 == x2) { // ï¿½îªº
+				if (y1 < y2) { // ï¿½ï¿½ï¿½k
+					if (chessBoard[x2][y2]->getName() == "empty") { // ï¿½nï¿½hï¿½ï¿½ï¿½Iï¿½Oempty
 						for (int i = y1 + 1; i < y2; i++) {
 							if (chessBoard[x1][i]->getName() != "empty") return false;
 						}
 					}
-					else { // ­n¥hªºÂI¬O¤£¦PÃC¦âªº´Ñ¤l
+					else { // ï¿½nï¿½hï¿½ï¿½ï¿½Iï¿½Oï¿½ï¿½ï¿½Pï¿½Cï¿½âªºï¿½Ñ¤l
 						int countChess = 0;
 						for (int i = y1 + 1; i < y2; i++) {
 							if (chessBoard[x1][i]->getName() != "empty") countChess++;
 						}
 						if (countChess != 1) return false;
 					}
-					
+
 				}
-				if (y1 > y2) { // ©¹¥ª
-					if (chessBoard[x2][y2]->getName() == "empty") { // ­n¥hªºÂI¬Oempty
+				if (y1 > y2) { // ï¿½ï¿½ï¿½ï¿½
+					if (chessBoard[x2][y2]->getName() == "empty") { // ï¿½nï¿½hï¿½ï¿½ï¿½Iï¿½Oempty
 						for (int i = y1 - 1; i > y2; i--) {
 							if (chessBoard[x1][i]->getName() != "empty") return false;
 						}
 					}
-					else { // ­n¥hªºÂI¬O¤£¦PÃC¦âªº´Ñ¤l
+					else { // ï¿½nï¿½hï¿½ï¿½ï¿½Iï¿½Oï¿½ï¿½ï¿½Pï¿½Cï¿½âªºï¿½Ñ¤l
 						int countChess = 0;
 						for (int i = y1 - 1; i > y2; i--) {
 							if (chessBoard[x1][i]->getName() != "empty") countChess++;
@@ -291,14 +291,14 @@ bool Cannon::canMove(int x1, int y1, int x2, int y2, std::vector<std::vector<Che
 				}
 
 			}
-			if (y1 == y2) { // ¾îªº
-				if (x1 < x2) { // ©¹¤U
-					if (chessBoard[x2][y2]->getName() == "empty") { // ­n¥hªºÂI¬Oempty
+			if (y1 == y2) { // ï¿½îªº
+				if (x1 < x2) { // ï¿½ï¿½ï¿½U
+					if (chessBoard[x2][y2]->getName() == "empty") { // ï¿½nï¿½hï¿½ï¿½ï¿½Iï¿½Oempty
 						for (int i = x1 + 1; i < x2; i++) {
 							if (chessBoard[i][y1]->getName() != "empty") return false;
 						}
 					}
-					else { // ­n¥hªºÂI¬O¤£¦PÃC¦âªº´Ñ¤l
+					else { // ï¿½nï¿½hï¿½ï¿½ï¿½Iï¿½Oï¿½ï¿½ï¿½Pï¿½Cï¿½âªºï¿½Ñ¤l
 						int countChess = 0;
 						for (int i = x1 + 1; i < x2; i++) {
 							if (chessBoard[i][y1]->getName() != "empty") countChess++;
@@ -307,13 +307,13 @@ bool Cannon::canMove(int x1, int y1, int x2, int y2, std::vector<std::vector<Che
 					}
 
 				}
-				if (x1 > x2) { // ©¹¥ª
-					if (chessBoard[x2][y2]->getName() == "empty") { // ­n¥hªºÂI¬Oempty
+				if (x1 > x2) { // ï¿½ï¿½ï¿½ï¿½
+					if (chessBoard[x2][y2]->getName() == "empty") { // ï¿½nï¿½hï¿½ï¿½ï¿½Iï¿½Oempty
 						for (int i = x1 - 1; i > x2; i--) {
 							if (chessBoard[i][y1]->getName() != "empty") return false;
 						}
 					}
-					else { // ­n¥hªºÂI¬O¤£¦PÃC¦âªº´Ñ¤l
+					else { // ï¿½nï¿½hï¿½ï¿½ï¿½Iï¿½Oï¿½ï¿½ï¿½Pï¿½Cï¿½âªºï¿½Ñ¤l
 						int countChess = 0;
 						for (int i = x1 - 1; i > x2; i--) {
 							if (chessBoard[i][y1]->getName() != "empty") countChess++;
@@ -326,31 +326,31 @@ bool Cannon::canMove(int x1, int y1, int x2, int y2, std::vector<std::vector<Che
 		}
 	}
 
-	// §PÂ_­n¥hªºÂI¡A¬O¤£¦PªºÃC¦â
+	// ï¿½Pï¿½_ï¿½nï¿½hï¿½ï¿½ï¿½Iï¿½Aï¿½Oï¿½ï¿½ï¿½Pï¿½ï¿½ï¿½Cï¿½ï¿½
 	if (chessBoard[x2][y2]->getColor() != color) {
-		// §PÂ_¨âÂI¤§¶¡¬O§_ª½½u
+		// ï¿½Pï¿½_ï¿½ï¿½ï¿½Iï¿½ï¿½ï¿½ï¿½ï¿½Oï¿½_ï¿½ï¿½ï¿½u
 		if ((x1 == x2 && y1 != y2) || (x1 != x2 && y1 == y2)) {
-			// ¦A§PÂ_¤§¶¡¬O§_¦³´Ñ¤l
-			if (x1 == x2) { // ¾îªº
-				if (y1 < y2) { // ©¹¥k
+			// ï¿½Aï¿½Pï¿½_ï¿½ï¿½ï¿½ï¿½ï¿½Oï¿½_ï¿½ï¿½ï¿½Ñ¤l
+			if (x1 == x2) { // ï¿½îªº
+				if (y1 < y2) { // ï¿½ï¿½ï¿½k
 					for (int i = y1 + 1; i < y2; i++) {
 						if (chessBoard[x1][i]->getName() != "empty") return false;
 					}
 				}
-				if (y1 > y2) { // ©¹¥ª
+				if (y1 > y2) { // ï¿½ï¿½ï¿½ï¿½
 					for (int i = y1 - 1; i > y2; i--) {
 						if (chessBoard[x1][i]->getName() != "empty") return false;
 					}
 				}
 
 			}
-			if (y1 == y2) { // ¾îªº
-				if (x1 < x2) { // ©¹¤U
+			if (y1 == y2) { // ï¿½îªº
+				if (x1 < x2) { // ï¿½ï¿½ï¿½U
 					for (int i = x1 + 1; i < x2; i++) {
 						if (chessBoard[i][y1]->getName() != "empty") return false;
 					}
 				}
-				if (x1 > x2) { // ©¹¥ª
+				if (x1 > x2) { // ï¿½ï¿½ï¿½ï¿½
 					for (int i = x1 - 1; i > x2; i--) {
 						if (chessBoard[i][y1]->getName() != "empty") return false;
 					}
@@ -366,11 +366,11 @@ bool Soldier::canMove(int x1, int y1, int x2, int y2, std::vector<std::vector<Ch
 {
 	if (color == "red") {
 		if (chessBoard[x2][y2]->getColor() != color) {
-			// ¥u¯àª½¨« ©¹¤W
+			// ï¿½uï¿½àª½ï¿½ï¿½ ï¿½ï¿½ï¿½W
 			if (y1 == y2 && x2 - x1 == -1) return true;
-			// ¦³¹Lªe => ¥i¥H¥ª¸ò¥k
-			if (x1 <= 4) { // ¹Lªe
-				if (x1 == x2 && abs(y1-y2) == 1) {
+			// ï¿½ï¿½ï¿½Lï¿½e => ï¿½iï¿½Hï¿½ï¿½ï¿½ï¿½k
+			if (x1 <= 4) { // ï¿½Lï¿½e
+				if (x1 == x2 && abs(y1 - y2) == 1) {
 					return true;
 				}
 			}
@@ -378,10 +378,10 @@ bool Soldier::canMove(int x1, int y1, int x2, int y2, std::vector<std::vector<Ch
 	}
 	if (color == "black") {
 		if (chessBoard[x2][y2]->getColor() != color) {
-			// ¥u¯àª½¨« ©¹¤U
+			// ï¿½uï¿½àª½ï¿½ï¿½ ï¿½ï¿½ï¿½U
 			if (y1 == y2 && x2 - x1 == 1) return true;
-			// ¦³¹Lªe => ¥i¥H¥ª¸ò¥k
-			if (x1 >= 5) { // ¹Lªe
+			// ï¿½ï¿½ï¿½Lï¿½e => ï¿½iï¿½Hï¿½ï¿½ï¿½ï¿½k
+			if (x1 >= 5) { // ï¿½Lï¿½e
 				if (x1 == x2 && abs(y1 - y2) == 1) {
 					return true;
 				}
