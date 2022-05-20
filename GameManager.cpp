@@ -52,7 +52,7 @@ void GameManager::update()
 void GameManager::render()
 {
 	switch (flowControl)
-	{	
+	{
 	case 0:
 		viewer.showMainPage(); break;
 	case 1:

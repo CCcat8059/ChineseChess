@@ -43,4 +43,3 @@ public:
 	void showEndPage();
 	void showReplayPage();
 };
-
