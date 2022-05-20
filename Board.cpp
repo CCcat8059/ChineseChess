@@ -69,7 +69,7 @@ Board::~Board()
 	}
 }
 
-Chess* Board::clickBoard(sf::Event& ev, sf::RenderWindow* window)
+Chess* Board::clickBoard(sf::Event& ev)
 {
 	for (int i = 0; i < chessBoard.size(); i++)
 	{
@@ -80,7 +80,7 @@ Chess* Board::clickBoard(sf::Event& ev, sf::RenderWindow* window)
 				int tempX = chosenChessIndex.x, tempY = chosenChessIndex.y;
 				if (tempX != -1 && tempY != -1)
 				{
-					//²M°£´£¥Ü¥i¨«
+					//æ¸…é™¤æç¤ºå¯èµ°
 					for (int x = 0; x < chessBoard.size(); x++)
 					{
 						for (int y = 0; y < chessBoard[x].size(); y++)
@@ -88,40 +88,16 @@ Chess* Board::clickBoard(sf::Event& ev, sf::RenderWindow* window)
 							chessBoard[x][y]->canMove_flag = false;
 						}
 					}
-					// ¦pªG§PÂ_³o­Ó´Ñ¤lªºMove³W«h¡A¥i¥H²¾°Ê¨ì²{¦b¿ïªº¦ì¸m = > swap
+					// å¦‚æžœåˆ¤æ–·é€™å€‹æ£‹å­çš„Moveè¦å‰‡ï¼Œå¯ä»¥ç§»å‹•åˆ°ç¾åœ¨é¸çš„ä½ç½® = > swap
 					if (chessBoard[tempX][tempY]->canMove(tempX, tempY, i, j, chessBoard) == true) {
-					
+
 						// if the color is opposite, eat it and swap
 						// otherwise just swap
 
-						//°Êµe
-						sf::Texture tmpTexture;
-						tmpTexture.create(window->getSize().x, window->getSize().y);
-						tmpTexture.update(*window);
-
-						for (int frame = 0; frame < 60; frame++) {
-
-							int step_x =( (chessBoard[i][j]->getBody().getPosition().x) - (chessBoard[tempX][tempY]->getBody().getPosition().x) )/ 60;
-							int step_y = ((chessBoard[i][j]->getBody().getPosition().y) - (chessBoard[tempX][tempY]->getBody().getPosition().y) ) / 60;
-							sf::Vector2f position = sf::Vector2f((chessBoard[tempX][tempY]->getBody().getPosition().x) + step_x * frame, (chessBoard[tempX][tempY]->getBody().getPosition().y) + step_y * frame);
-							
-							sf::Sprite sp;
-							sp = chessBoard[tempX][tempY]->getBody();
-							sp.setPosition(position);
-
-							window->clear();
-							sf::Sprite sp_bg;
-							sp_bg.setTexture(tmpTexture);
-							window->draw(sp_bg);
-							window->draw(sp);
-							window->display();
-							sf::Time delayTime = sf::milliseconds(2);
-							sf::sleep(delayTime);
-						}
 						std::string thitRoundColor;
 						thitRoundColor = roundCount % 2 == 0 ? "red" : "black";
-						//¦pªG¦Y±¼king´N§PÂ_Àò³Ó
-					
+						//å¦‚æžœåƒæŽ‰kingå°±åˆ¤æ–·ç²å‹
+
 						if (chessBoard[i][j]->getName() == "king") {
 							winner = thitRoundColor;
 							return chessBoard[i][j];
@@ -135,22 +111,22 @@ Chess* Board::clickBoard(sf::Event& ev, sf::RenderWindow* window)
 						swapChess(chessBoard[i][j], chessBoard[tempX][tempY]);
 						chosenChessIndex = { -1,-1 };
 
-					
-						
-						for (int _i = 0; _i < chessBoard.size(); _i++)//²¾°Ê§¹ÀË¬d¦P¦â¨C­Ó´Ñ¤l¬O§_³y¦¨±N­x
+
+
+						for (int _i = 0; _i < chessBoard.size(); _i++)//ç§»å‹•å®Œæª¢æŸ¥åŒè‰²æ¯å€‹æ£‹å­æ˜¯å¦é€ æˆå°‡è»
 						{
 							for (int _j = 0; _j < chessBoard[_i].size(); _j++)
 							{
 								if (chessBoard[_i][_j]->getColor() == thitRoundColor) {
-									Chess*  myChess = chessBoard[_i][_j];
+									Chess* myChess = chessBoard[_i][_j];
 
-									for (int x = 0; x < chessBoard.size(); x++)//²¾°Ê§¹ÀË¬d¬O§_±N­x
+									for (int x = 0; x < chessBoard.size(); x++)//ç§»å‹•å®Œæª¢æŸ¥æ˜¯å¦å°‡è»
 									{
 										for (int y = 0; y < chessBoard[x].size(); y++)
 										{
 											if (myChess->canMove(_i, _j, x, y, chessBoard) && chessBoard[x][y]->getName() == "king") {
 												checkmate = thitRoundColor;
-												
+
 											}
 										}
 									}
@@ -161,7 +137,7 @@ Chess* Board::clickBoard(sf::Event& ev, sf::RenderWindow* window)
 						return temp;
 					}
 
-					// µLªk²¾°Ê¡A´NDo Nothing
+					// ç„¡æ³•ç§»å‹•ï¼Œå°±Do Nothing
 					else {
 						chosenChessIndex = { -1,-1 };
 						continue;
@@ -191,7 +167,7 @@ Chess* Board::clickBoard(sf::Event& ev, sf::RenderWindow* window)
 					{
 						for (int y = 0; y < chessBoard[x].size(); y++)
 						{
-							chessBoard[x][y]->canMove_flag =false;
+							chessBoard[x][y]->canMove_flag = false;
 						}
 					}
 					return chessBoard[i][j];
@@ -212,89 +188,10 @@ void Board::swapChess(Chess* a, Chess* b)
 void Board::removeChess(Point target)
 {
 	if (chessBoard[target.x][target.y]->getName() != "empty") {
-		std::string path= "image/" + chessBoard[target.x][target.y]->getColor() + "/" + chessBoard[target.x][target.y]->getName() + ".png";
-		removedChess.push_back(path);
-		removedCount++;
+		std::string path = "image/" + chessBoard[target.x][target.y]->getColor() + "/" + chessBoard[target.x][target.y]->getName() + ".png";
+		removedChesses.push_back(path);
 	}
 	delete chessBoard[target.x][target.y];
 	sf::Vector2f position = sf::Vector2f(54 + target.y * 87.5 - 37.5, 50 + target.x * 85.5 - 37.5);
 	chessBoard[target.x][target.y] = new Empty(position);
-	
-}
-
-void Board::drawBoard(sf::RenderWindow* window)
-{
-	for (auto& v : chessBoard)
-		for (auto& c : v) {
-			sf::Sprite sp = c->getBody();
-			
-			if(c->canMove_flag){
-				if (c->getName() == "empty") {
-					sf::CircleShape shape(37.f);
-					shape.setPosition(sp.getPosition());
-					shape.setFillColor(sf::Color::Color(255,0,0,120));
-					
-					window->draw(shape);
-					continue;
-
-				}
-				else {
-					sp.setColor(sf::Color::Red);
-					window->draw(sp);
-					
-				}
-				
-			}
-			
-			window->draw(sp);
-		}
-	for (int i = 0; i < removedCount; i++) {
-		std::string path = removedChess[i];
-		sf::Vector2f position = sf::Vector2f(850+(i/8)*100,75+(i%8)*100);
-		sf::Texture texture;
-		texture.loadFromFile(path);
-		sf::Sprite sp ;
-		sp.setTexture(texture);
-		sp.setPosition(position);
-		window->draw(sp);
-	}
-
-	std::string thitRoundColor;
-	thitRoundColor = roundCount % 2 == 0 ? "red" : "black";
-	sf::Font font;
-	font.loadFromFile("font/arial.ttf");
-	sf::Text text;
-	text.setFont(font);
-	text.setString("Current Player : "+ thitRoundColor);
-	sf::Vector2f position = sf::Vector2f(850 , 10);
-	text.setPosition(position);
-	text.setCharacterSize(50); // in pixels, not points!
-	text.setFillColor(sf::Color::Black);
-	window->draw(text);
-	
-	if (checkmate != "") {
-		window->display();
-		std::string msg;
-		if (checkmate == "red")msg = "¬õ¤è±N­x";
-		if (checkmate == "black")msg = "¶Â¤è±N­x";
-		MessageBoxA(NULL, msg.c_str(), "´£¥Ü", MB_OKCANCEL | MB_ICONEXCLAMATION);
-		checkmate="";
-	}
-	if (winner != "") {
-		std::string msg;
-		
-		if (winner == "red")msg = "¬õ¤èÀò³Ó";
-		if (winner == "black")msg = "¶Â¤èÀò³Ó";
-		MessageBoxA(NULL, msg.c_str(), "´£¥Ü", MB_OKCANCEL | MB_ICONEXCLAMATION);
-		winner = "";
-	}
-}
-
-void Board::update()
-{
-	for (auto& v : chessBoard) {
-		for (auto& c : v) {
-			c->update();
-		}
-	}
 }
