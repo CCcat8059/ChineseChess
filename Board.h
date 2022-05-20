@@ -30,7 +30,7 @@ public:
 	std::vector<std::vector<Chess*>>& getBoard() { return chessBoard; };
 	Point getChosenChessIndex() { return chosenChessIndex; };
 	void setChosenChessIndex(Point p) { chosenChessIndex = { p.x,p.y }; };
-	Chess* clickBoard(sf::Event&);
+	Chess* clickBoard(sf::Event&, sf::RenderWindow* window);
 	void swapChess(Chess*, Chess*);
 	void removeChess(Point);
 	void drawBoard(sf::RenderWindow*);

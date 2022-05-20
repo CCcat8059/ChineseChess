@@ -1,5 +1,4 @@
 #include "Board.h"
-
 Board::Board()
 {
 	nameTable = { {"Chariot", "Horse" , "Elephant","Advisor","King"   ,"Advisor","Elephant","Horse" ,"Chariot"},
@@ -70,7 +69,7 @@ Board::~Board()
 	}
 }
 
-Chess* Board::clickBoard(sf::Event& ev)
+Chess* Board::clickBoard(sf::Event& ev, sf::RenderWindow* window)
 {
 	for (int i = 0; i < chessBoard.size(); i++)
 	{
@@ -95,6 +94,30 @@ Chess* Board::clickBoard(sf::Event& ev)
 						// if the color is opposite, eat it and swap
 						// otherwise just swap
 
+						//動畫
+						sf::Texture tmpTexture;
+						tmpTexture.create(window->getSize().x, window->getSize().y);
+						tmpTexture.update(*window);
+
+						for (int frame = 0; frame < 60; frame++) {
+
+							int step_x =( (chessBoard[i][j]->getBody().getPosition().x) - (chessBoard[tempX][tempY]->getBody().getPosition().x) )/ 60;
+							int step_y = ((chessBoard[i][j]->getBody().getPosition().y) - (chessBoard[tempX][tempY]->getBody().getPosition().y) ) / 60;
+							sf::Vector2f position = sf::Vector2f((chessBoard[tempX][tempY]->getBody().getPosition().x) + step_x * frame, (chessBoard[tempX][tempY]->getBody().getPosition().y) + step_y * frame);
+							
+							sf::Sprite sp;
+							sp = chessBoard[tempX][tempY]->getBody();
+							sp.setPosition(position);
+
+							window->clear();
+							sf::Sprite sp_bg;
+							sp_bg.setTexture(tmpTexture);
+							window->draw(sp_bg);
+							window->draw(sp);
+							window->display();
+							sf::Time delayTime = sf::milliseconds(2);
+							sf::sleep(delayTime);
+						}
 						std::string thitRoundColor;
 						thitRoundColor = roundCount % 2 == 0 ? "red" : "black";
 						//如果吃掉king就判斷獲勝
@@ -248,8 +271,9 @@ void Board::drawBoard(sf::RenderWindow* window)
 	text.setCharacterSize(50); // in pixels, not points!
 	text.setFillColor(sf::Color::Black);
 	window->draw(text);
-
+	
 	if (checkmate != "") {
+		window->display();
 		std::string msg;
 		if (checkmate == "red")msg = "紅方將軍";
 		if (checkmate == "black")msg = "黑方將軍";
@@ -258,6 +282,7 @@ void Board::drawBoard(sf::RenderWindow* window)
 	}
 	if (winner != "") {
 		std::string msg;
+		
 		if (winner == "red")msg = "紅方獲勝";
 		if (winner == "black")msg = "黑方獲勝";
 		MessageBoxA(NULL, msg.c_str(), "提示", MB_OKCANCEL | MB_ICONEXCLAMATION);
