@@ -12,10 +12,8 @@ public:
 	Chess() {};
 	~Chess() {};
 	std::string getColor() { return color; };
+	bool getMoveFlag() { return canMove_flag; };
 	virtual bool canMove(int x1, int y1, int x2, int y2, std::vector<std::vector<Chess*>> chessBoard) { return 0; }
-	void update() {
-		std::string path = "image/" + color + "/" + name + ".png";
-	}
 	bool canMove_flag = false;
 };
 

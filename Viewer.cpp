@@ -46,7 +46,7 @@ void Viewer::initGamePage()
 {
 	if (this->window != nullptr)
 		delete this->window;
-	sf::VideoMode videoMode(810, 875);
+	sf::VideoMode videoMode(1500, 875);
 	this->window = new sf::RenderWindow(videoMode, "ChineseChess", sf::Style::Titlebar | sf::Style::Close);
 	// Board init
 	this->boardTexture.loadFromFile("image/board.jpg");
@@ -97,7 +97,7 @@ int Viewer::updateMainPage(sf::Event ev)
 	return flowControl;
 }
 
-int Viewer::updateGamePage(sf::Event ev,Board* board)
+int Viewer::updateGamePage(sf::Event ev, Board* board)
 {
 	int flowControl = 1;
 	Chess* clickChess = nullptr;
@@ -112,6 +112,23 @@ int Viewer::updateGamePage(sf::Event ev,Board* board)
 		if (clickChess != nullptr)
 		{
 			std::cout << clickChess->getName() << ' ' << clickChess->getColor() << "\n";
+			std::string checkmate = board->getCheckmate();
+			if (checkmate != "") {
+				std::string msg;
+				if (checkmate == "red") msg = "red checkmate";
+				if (checkmate == "black") msg = "black checkmate";
+				MessageBoxA(NULL, msg.c_str(), "Message", MB_OKCANCEL | MB_ICONEXCLAMATION);
+				board->setCheckmate("");
+			}
+			std::string winner = board->getWinner();
+			if (winner != "") {
+				std::string msg;
+				if (winner == "red") msg = "red win";
+				if (winner == "black") msg = "black win";
+				MessageBoxA(NULL, msg.c_str(), "Message", MB_OK);
+				flowControl = 2;
+				return flowControl;
+			}
 		}
 		break;
 	case sf::Event::KeyPressed:
@@ -155,7 +172,56 @@ void Viewer::showGamePage(Board* board)
 {
 	window->clear(sf::Color::White);
 	window->draw(*this->boardBackground);
-	board->drawBoard(window);
+	// draw chess and the position that chess can move to
+	for (auto& v : board->getBoard()) {
+		for (auto& c : v) {
+			sf::Sprite sp = c->getBody();
+			if (c->canMove_flag) {
+				if (c->getName() == "empty") {
+					sf::CircleShape shape(37.f);
+					shape.setPosition(sp.getPosition());
+					shape.setFillColor(sf::Color::Color(255, 0, 0, 120));
+
+					window->draw(shape);
+					continue;
+				}
+				else {
+					sp.setColor(sf::Color::Red);
+					window->draw(sp);
+				}
+			}
+			if (c->getName() != "empty")
+				window->draw(sp);
+		}
+	}
+
+	// display dead chesses and 
+	std::vector<std::string> removedChesses = board->getRemovedChesses();
+	for (int i = 0; i < removedChesses.size(); i++) {
+		std::string path = removedChesses[i];
+		sf::Vector2f position = sf::Vector2f(850 + (i / 8) * 100, 75 + (i % 8) * 100);
+		sf::Texture texture;
+		texture.loadFromFile(path);
+		sf::Sprite sp;
+		sp.setTexture(texture);
+		sp.setPosition(position);
+		window->draw(sp);
+	}
+
+	// display which side should move
+	std::string thitRoundColor;
+	thitRoundColor = board->getRoundCount() % 2 == 0 ? "red" : "black";
+	sf::Font font;
+	font.loadFromFile("font/arial.ttf");
+	sf::Text text;
+	text.setFont(font);
+	text.setString("Current Player : " + thitRoundColor);
+	sf::Vector2f position = sf::Vector2f(850, 10);
+	text.setPosition(position);
+	text.setCharacterSize(50); // in pixels, not points!
+	text.setFillColor(sf::Color::Black);
+	window->draw(text);
+
 	window->display();
 }
 
