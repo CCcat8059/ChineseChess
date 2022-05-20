@@ -1,10 +1,7 @@
 #include "GameManager.h"
-#include "Button.h"
-
 
 int main()
 {
-	// test cccat
 	GameManager game;
 
 	while (game.isRunning())
@@ -14,4 +11,3 @@ int main()
 	}
 	return EXIT_SUCCESS;
 }
-

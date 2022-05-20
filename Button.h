@@ -17,6 +17,8 @@ public:
 	Button(sf::Vector2f, std::string);
 	Button(Button*);
 	Button operator=(const Button&);
+	void setPosition(sf::Vector2f);
+	void setName(std::string);
 	void setTexture(std::string);
 	bool isClicked(sf::Event&);
 	sf::Sprite& getBody() { return body; }
