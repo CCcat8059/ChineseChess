@@ -55,10 +55,6 @@ void Viewer::initGamePage()
 	this->boardBackground->setPosition(20, 20);
 }
 
-void Viewer::initEndPage()
-{
-}
-
 void Viewer::initReplayPage()
 {
 }
@@ -126,8 +122,14 @@ int Viewer::updateGamePage(sf::Event ev, Board* board)
 				if (winner == "red") msg = "red win";
 				if (winner == "black") msg = "black win";
 				MessageBoxA(NULL, msg.c_str(), "Message", MB_OK);
-				flowControl = 2;
-				return flowControl;
+				
+				int result = MessageBoxA(NULL, "play again?", "Message", MB_OKCANCEL);
+				(*board).resetBoard();
+				if (result == 2) // back to main menu
+				{
+					flowControl = 0;
+					return flowControl;
+				}
 			}
 		}
 		break;
@@ -148,14 +150,10 @@ int Viewer::updateGamePage(sf::Event ev, Board* board)
 	return flowControl;
 }
 
-int Viewer::updateEndPage(sf::Event ev)
+int Viewer::updateReplayPage(sf::Event ev)
 {
 	int flowControl = 2;
 	return flowControl;
-}
-
-void Viewer::updateReplayPage()
-{
 }
 
 void Viewer::showMainPage()
@@ -173,8 +171,8 @@ void Viewer::showGamePage(Board* board)
 	window->clear(sf::Color::White);
 	window->draw(*this->boardBackground);
 	// draw chess and the position that chess can move to
-	for (auto& v : board->getBoard()) {
-		for (auto& c : v) {
+	for (auto v : board->getBoard()) {
+		for (auto c : v) {
 			sf::Sprite sp = c->getBody();
 			if (c->canMove_flag) {
 				if (c->getName() == "empty") {
@@ -223,10 +221,6 @@ void Viewer::showGamePage(Board* board)
 	window->draw(text);
 
 	window->display();
-}
-
-void Viewer::showEndPage()
-{
 }
 
 void Viewer::showReplayPage()

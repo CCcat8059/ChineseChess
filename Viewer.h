@@ -30,16 +30,13 @@ public:
 
 	void initMainPage();
 	void initGamePage();
-	void initEndPage();
 	void initReplayPage();
 
 	int updateMainPage(sf::Event);
 	int updateGamePage(sf::Event, Board*);
-	int updateEndPage(sf::Event);
-	void updateReplayPage();
+	int updateReplayPage(sf::Event);
 
 	void showMainPage();
 	void showGamePage(Board*);
-	void showEndPage();
 	void showReplayPage();
 };
