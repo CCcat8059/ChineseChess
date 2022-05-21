@@ -24,12 +24,28 @@ Board::Board()
 
 	chessBoard.resize(10);
 	for (auto& c : chessBoard)
-		c.resize(9);
+		c.resize(9, nullptr);
 
+	resetBoard();
+}
+
+Board::~Board()
+{
+	for (auto& v : chessBoard)
+	{
+		for (auto& c : v)
+			delete c;
+	}
+}
+
+void Board::resetBoard()
+{
 	for (int i = 0; i < 10; i++) {
 		for (int j = 0; j < 9; j++) {
 			std::string color = (i <= 4 && j <= 9) ? "black" : "red";
 			sf::Vector2f position = sf::Vector2f(54 + j * 87.5 - 37.5, 50 + i * 85.5 - 37.5);
+			if (chessBoard[i][j] != nullptr)
+				delete chessBoard[i][j];
 
 			if (nameTable[i][j] == "Empty") {
 				chessBoard[i][j] = new Empty(position);
@@ -57,17 +73,11 @@ Board::Board()
 			}
 		}
 	}
-
 	chosenChessIndex = { -1,-1 };
-}
-
-Board::~Board()
-{
-	for (auto& v : chessBoard)
-	{
-		for (auto& c : v)
-			delete c;
-	}
+	removedChesses = std::vector<std::string>();
+	checkmate = "";
+	winner = "";
+	roundCount = 0;
 }
 
 Chess* Board::clickBoard(sf::Event& ev, sf::RenderWindow* window)
@@ -89,7 +99,7 @@ Chess* Board::clickBoard(sf::Event& ev, sf::RenderWindow* window)
 							chessBoard[x][y]->canMove_flag = false;
 						}
 					}
-					
+
 					// 如果判斷這個棋子的Move規則，可以移動到現在選的位置 = > swap
 					if (chessBoard[tempX][tempY]->canMove(tempX, tempY, i, j, chessBoard) == true) {
 
@@ -206,8 +216,8 @@ Chess* Board::clickBoard(sf::Event& ev, sf::RenderWindow* window)
 void Board::swapChess(Chess* a, Chess* b)
 {
 	sf::Vector2f tempPos = a->getBody().getPosition();
-	a->getBody().setPosition(b->getBody().getPosition());
-	b->getBody().setPosition(tempPos);
+	a->setPosition(b->getBody().getPosition());
+	b->setPosition(tempPos);
 }
 
 void Board::removeChess(Point target)

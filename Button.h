@@ -21,6 +21,6 @@ public:
 	void setName(std::string);
 	void setTexture(std::string);
 	bool isClicked(sf::Event&);
-	sf::Sprite& getBody() { return body; }
+	sf::Sprite getBody() const { return body; }
 	std::string getName() { return name; }
 };
