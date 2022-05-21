@@ -3,6 +3,7 @@
 GameManager::GameManager()
 {
 	flowControl = 0;
+	this->ev = sf::Event();
 	viewer.initMainPage();
 }
 
@@ -27,11 +28,7 @@ void GameManager::update()
 		case 1:
 			temp = viewer.updateGamePage(ev, &board); break;
 		case 2:
-			temp = viewer.updateEndPage(ev); break;
-			/*
-			case 3:
-				updateReplayPage(); break;
-			*/
+			temp = viewer.updateReplayPage(ev); break;
 		}
 		if (flowControl != temp)
 		{
@@ -42,7 +39,7 @@ void GameManager::update()
 			case 1:
 				viewer.initGamePage(); break;
 			case 2:
-				viewer.initEndPage(); break;
+				viewer.initReplayPage(); break;
 			}
 			flowControl = temp;
 		}
@@ -58,6 +55,6 @@ void GameManager::render()
 	case 1:
 		viewer.showGamePage(&board); break;
 	case 2:
-		viewer.showEndPage(); break;
+		viewer.showReplayPage(); break;
 	}
 }
