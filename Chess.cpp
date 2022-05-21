@@ -32,10 +32,8 @@ bool King::canMove(int x1, int y1, int x2, int y2, std::vector<std::vector<Chess
 	if (y2 >= 3 && y2 <= 5) {
 		if (color == "red") {
 			if (chessBoard[x2][y2]->getColor() != color) {
-
-
 				if (x2 >= 7 && x2 <= 9) {
-					if (abs(x1 - x2 + y1 - y2) == 1) {
+					if (abs(x1 - x2) + abs(y1 - y2) == 1) {
 						return true;
 					}
 				}
@@ -44,7 +42,7 @@ bool King::canMove(int x1, int y1, int x2, int y2, std::vector<std::vector<Chess
 		if (color == "black") {
 			if (chessBoard[x2][y2]->getColor() != color) {
 				if (x2 >= 0 && x2 <= 2) {
-					if (abs(x1 - x2 + y1 - y2) == 1) {
+					if (abs(x1 - x2) + abs(y1 - y2) == 1) {
 						return true;
 					}
 				}
@@ -60,7 +58,7 @@ bool Advisor::canMove(int x1, int y1, int x2, int y2, std::vector<std::vector<Ch
 		if (color == "red") {
 			if (chessBoard[x2][y2]->getColor() != color) {
 				if (x2 >= 7 && x2 <= 9) {
-					if (abs(x1 - x2) + abs(y1 - y2) == 2) {
+					if (abs(x1 - x2) == 1 && abs(y1 - y2) == 1) {
 						return true;
 					}
 				}
@@ -69,7 +67,7 @@ bool Advisor::canMove(int x1, int y1, int x2, int y2, std::vector<std::vector<Ch
 		if (color == "black") {
 			if (chessBoard[x2][y2]->getColor() != color) {
 				if (x2 >= 0 && x2 <= 2) {
-					if (abs(x1 - x2) + abs(y1 - y2) == 2) {
+					if (abs(x1 - x2) == 1 && abs(y1 - y2) == 1) {
 						return true;
 					}
 				}
