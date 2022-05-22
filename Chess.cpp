@@ -1,6 +1,6 @@
 ﻿#include "Chess.h"
 
-// TODO every chesses' move
+// every chesses' move
 
 bool King::canMove(int x1, int y1, int x2, int y2, std::vector<std::vector<Chess*>> chessBoard)
 {
@@ -24,7 +24,12 @@ bool King::canMove(int x1, int y1, int x2, int y2, std::vector<std::vector<Chess
 			if (chessBoard[i][rkY]->getName() != "empty") countChess++;
 		}
 		if (countChess == 0) { // ����������
-			if ((x2 == bkX && y2 == bkY) || (x2 == rkX && y2 == rkY))return true;
+			if (color == "red" && (x2 == bkX && y2 == bkY)) {
+				 return true;
+			}
+			if (color == "black" && (x2 == rkX && y2 == rkY)) {
+				return true;
+			}
 		}
 	}
 
@@ -32,10 +37,8 @@ bool King::canMove(int x1, int y1, int x2, int y2, std::vector<std::vector<Chess
 	if (y2 >= 3 && y2 <= 5) {
 		if (color == "red") {
 			if (chessBoard[x2][y2]->getColor() != color) {
-
-
 				if (x2 >= 7 && x2 <= 9) {
-					if (abs(x1 - x2 + y1 - y2) == 1) {
+					if (abs(x1 - x2) + abs(y1 - y2) == 1) {
 						return true;
 					}
 				}
@@ -44,7 +47,7 @@ bool King::canMove(int x1, int y1, int x2, int y2, std::vector<std::vector<Chess
 		if (color == "black") {
 			if (chessBoard[x2][y2]->getColor() != color) {
 				if (x2 >= 0 && x2 <= 2) {
-					if (abs(x1 - x2 + y1 - y2) == 1) {
+					if (abs(x1 - x2) + abs(y1 - y2) == 1) {
 						return true;
 					}
 				}
@@ -60,7 +63,7 @@ bool Advisor::canMove(int x1, int y1, int x2, int y2, std::vector<std::vector<Ch
 		if (color == "red") {
 			if (chessBoard[x2][y2]->getColor() != color) {
 				if (x2 >= 7 && x2 <= 9) {
-					if (abs(x1 - x2) + abs(y1 - y2) == 2) {
+					if (abs(x1 - x2) == 1 && abs(y1 - y2) == 1) {
 						return true;
 					}
 				}
@@ -69,7 +72,7 @@ bool Advisor::canMove(int x1, int y1, int x2, int y2, std::vector<std::vector<Ch
 		if (color == "black") {
 			if (chessBoard[x2][y2]->getColor() != color) {
 				if (x2 >= 0 && x2 <= 2) {
-					if (abs(x1 - x2) + abs(y1 - y2) == 2) {
+					if (abs(x1 - x2) == 1 && abs(y1 - y2) == 1) {
 						return true;
 					}
 				}
@@ -85,7 +88,7 @@ bool Elephant::canMove(int x1, int y1, int x2, int y2, std::vector<std::vector<C
 		if (color == "red") {
 			if (chessBoard[x2][y2]->getColor() != color) {
 				if (x2 >= 5 && x2 <= 9) {
-					if (abs(x1 - x2) + abs(y1 - y2) == 4) {
+					if (abs(x1 - x2) == 2 && abs(y1 - y2) == 2) {
 						// �p�G�Цr�������Ѥl�N���ਫ
 						if (x1 > x2 && y1 < y2) { // ���k�W��
 							if (chessBoard[x1 - 1][y1 + 1]->getName() == "empty") {
@@ -114,7 +117,7 @@ bool Elephant::canMove(int x1, int y1, int x2, int y2, std::vector<std::vector<C
 		if (color == "black") {
 			if (chessBoard[x2][y2]->getColor() != color) {
 				if (x2 >= 0 && x2 <= 4) {
-					if (abs(x1 - x2) + abs(y1 - y2) == 4) {
+					if (abs(x1 - x2) == 2 && abs(y1 - y2) == 2) {
 						// �p�G�Цr�������Ѥl�N���ਫ
 						if (x1 > x2 && y1 < y2) { // ���k�W��
 							if (chessBoard[x1 - 1][y1 + 1]->getName() == "empty") {
@@ -184,25 +187,29 @@ bool Horse::canMove(int x1, int y1, int x2, int y2, std::vector<std::vector<Ches
 			if (chessBoard[x2][y2]->getColor() != color) {
 				if (x2 >= 0 && x2 <= 9) {
 					if (abs(x1 - x2) + abs(y1 - y2) == 3) {
-						// �p�G�Цr�������Ѥl�N���ਫ
-						if (x1 > x2 && y1 < y2) { // ���k�W��
-							if (chessBoard[x1 - 1][y1 + 1]->getName() == "empty") {
-								return true;
+						// ����Q�d�차�}
+						if (abs(x1 - x2) == 1) { // ����k
+							if (y1 < y2) { // ���k
+								if (chessBoard[x1][y1 + 1]->getName() == "empty") {
+									return true;
+								}
+							}
+							if (y1 > y2) { // ����
+								if (chessBoard[x1][y1 - 1]->getName() == "empty") {
+									return true;
+								}
 							}
 						}
-						if (x1 > x2 && y1 > y2) { // �����W��
-							if (chessBoard[x1 - 1][y1 - 1]->getName() == "empty") {
-								return true;
+						if (abs(y1 - y2) == 1) { // �W��U
+							if (x1 > x2) { // ���W
+								if (chessBoard[x1 - 1][y1]->getName() == "empty") {
+									return true;
+								}
 							}
-						}
-						if (x1 < x2 && y1 < y2) { // ���k�U��
-							if (chessBoard[x1 + 1][y1 + 1]->getName() == "empty") {
-								return true;
-							}
-						}
-						if (x1 < x2 && y1 > y2) { // �����U��
-							if (chessBoard[x1 + 1][y1 - 1]->getName() == "empty") {
-								return true;
+							if (x1 < x2) { // ���U
+								if (chessBoard[x1 + 1][y1]->getName() == "empty") {
+									return true;
+								}
 							}
 						}
 					}
