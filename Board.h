@@ -34,6 +34,7 @@ public:
 	int getRoundCount() { return roundCount; };
 	std::string getWinner() { return winner; };
 
+	void addRemovedChess(std::string name) { removedChesses.push_back(name); };
 	void setCheckmate(std::string checkmate) { this->checkmate = checkmate; };
 	void setChosenChessIndex(Point p) { chosenChessIndex = { p.x,p.y }; };
 	void resetBoard();
