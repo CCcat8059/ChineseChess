@@ -59,6 +59,7 @@ void Viewer::initReplayPage(Board* board)
 {
 	replay.selectFile();
 	replay.readFile();
+	replay.setMoveIndex(0);
 	initGamePage();
 	this->nextStepButton.setName("next_step_button");
 	this->nextStepButton.setPosition({ 1280,80 });
@@ -168,14 +169,6 @@ int Viewer::updateReplayPage(sf::Event ev, Board* board)
 		if (nextStepButton.isClicked(ev))
 		{
 			std::string move = replay.getCurrent();
-			if (move == replay.getBackMove())
-			{
-				std::string winner = (replay.getStatus() == 1 ? "red win" : "black win");
-				MessageBoxA(NULL, winner.c_str(), "Message", MB_OK);
-				(*board).resetBoard();
-				flowControl = 0;
-				return flowControl;
-			}
 			sf::Event replayEV;
 			replayEV.type = sf::Event::MouseButtonPressed;
 			replayEV.mouseButton.x = 54 + (move[1] - '0') * 87.5 + 37.5;
@@ -185,6 +178,14 @@ int Viewer::updateReplayPage(sf::Event ev, Board* board)
 			replayEV.mouseButton.y = 50 + (move[8] - '0') * 85.5 + 37.5;
 			board->clickBoard(replayEV, window);
 			replay++;
+			if (move == replay.getBackMove())
+			{
+				std::string winner = (replay.getStatus() == 1 ? "red win" : "black win");
+				MessageBoxA(NULL, winner.c_str(), "Message", MB_OK);
+				(*board).resetBoard();
+				flowControl = 0;
+				return flowControl;
+			}
 		}
 		break;
 	}
