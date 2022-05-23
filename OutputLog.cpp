@@ -29,7 +29,7 @@ void OutputLog::writeLog(std::string color, std::string chess, int x1, int y1, i
 		log += "Soldier";
 	}
 	
-	log +=" (" + std::to_string(x1) + ", " + std::to_string(y1) + ") -> (" + std::to_string(x2) + ", " + std::to_string(y2) + ")";
+	log +=" (" + std::to_string(y1) + ", " + std::to_string(x1) + ") -> (" + std::to_string(y2) + ", " + std::to_string(x2) + ")";
 	logArray.push_back(log);
 }
 
@@ -48,7 +48,7 @@ void OutputLog::writeWinner(std::string winner)
 void OutputLog::outputLogFile()
 {	std::time_t now_time;
 	now_time = time(NULL);
-	std::string logFilePath = "C:/Users/張睿麟/Documents/ChineseChess/replaylog/log_"+std::to_string(now_time)+".txt";
+	std::string logFilePath = "C:/Users/張睿麟/Documents/ChineseChess/replaylog/log_" + std::to_string(now_time) + ".txt";
 	std::ofstream ofs(logFilePath);
 	for (int i = 0; i < logArray.size(); i++) {
 		ofs << logArray[i]<< "\n";
