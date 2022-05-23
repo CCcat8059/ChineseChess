@@ -102,7 +102,6 @@ Chess* Board::clickBoard(sf::Event& ev, sf::RenderWindow* window)
 
 					// 如果判斷這個棋子的Move規則，可以移動到現在選的位置 = > swap
 					if (chessBoard[tempX][tempY]->canMove(tempX, tempY, i, j, chessBoard) == true) {
-
 						// if the color is opposite, eat it and swap
 						// otherwise just swap
 						sf::Texture tmpTexture;
@@ -110,7 +109,6 @@ Chess* Board::clickBoard(sf::Event& ev, sf::RenderWindow* window)
 						tmpTexture.update(*window);
 
 						for (int frame = 0; frame < 75; frame++) {
-
 							int step_x = ((chessBoard[i][j]->getBody().getPosition().x) - (chessBoard[tempX][tempY]->getBody().getPosition().x)) / 75;
 							int step_y = ((chessBoard[i][j]->getBody().getPosition().y) - (chessBoard[tempX][tempY]->getBody().getPosition().y)) / 75;
 							sf::Vector2f position = sf::Vector2f((chessBoard[tempX][tempY]->getBody().getPosition().x) + step_x * frame, (chessBoard[tempX][tempY]->getBody().getPosition().y) + step_y * frame);
@@ -145,8 +143,6 @@ Chess* Board::clickBoard(sf::Event& ev, sf::RenderWindow* window)
 						chessBoard[tempX][tempY] = temp;
 						swapChess(chessBoard[i][j], chessBoard[tempX][tempY]);
 						chosenChessIndex = { -1,-1 };
-
-
 
 						for (int _i = 0; _i < chessBoard.size(); _i++)//移動完檢查同色每個棋子是否造成將軍
 						{
