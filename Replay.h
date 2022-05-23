@@ -24,7 +24,7 @@ public:
 	int getStatus() { return gameStatus; };
 	std::string getBackMove() { return moveLog.back(); };
 	std::string getCurrent() { return moveLog[readMoveIndex]; };
-
+	std::vector<std::string> getMoveLog() { return moveLog; }
 	std::string operator++(int);
 };
 

@@ -114,16 +114,20 @@ int Viewer::updateGamePage(sf::Event ev, Board* board)
 		if (clickChess != nullptr)
 		{
 			std::cout << clickChess->getName() << ' ' << clickChess->getColor() << "\n";
+
+			// Function which judge is CheckMate or not
 			std::string checkmate = board->getCheckmate();
-			if (checkmate != "") {
+			if (checkmate != "") { // if checkMate confirmed, send the message to player.
 				std::string msg;
 				if (checkmate == "red") msg = "red checkmate";
 				if (checkmate == "black") msg = "black checkmate";
 				MessageBoxA(NULL, msg.c_str(), "Message", MB_OKCANCEL | MB_ICONEXCLAMATION);
 				board->setCheckmate("");
 			}
+
+			// Function which judge is over or not
 			std::string winner = board->getWinner();
-			if (winner != "") {
+			if (winner != "") { // if overed, show the result, and player can choice play again or not.
 				std::string msg;
 				if (winner == "red") msg = "red win";
 				if (winner == "black") msg = "black win";
@@ -177,12 +181,21 @@ int Viewer::updateReplayPage(sf::Event ev, Board* board)
 			replayEV.mouseButton.x = 54 + (move[6] - '0') * 87.5 + 37.5;
 			replayEV.mouseButton.y = 50 + (move[8] - '0') * 85.5 + 37.5;
 			board->clickBoard(replayEV, window);
+			
 			replay++;
 			if (move == replay.getBackMove())
 			{
-				std::string winner = (replay.getStatus() == 1 ? "red win" : "black win");
-				MessageBoxA(NULL, winner.c_str(), "Message", MB_OK);
-				(*board).resetBoard();
+				if (replay.getStatus() == -1) {
+					std::string finish = "the replay log is finish";
+					MessageBoxA(NULL, finish.c_str(), "Message", MB_OK);
+					(*board).resetBoard();
+				}
+				else {
+					std::string winner = (replay.getStatus() == 1 ? "red win" : "black win");
+					MessageBoxA(NULL, winner.c_str(), "Message", MB_OK);
+					(*board).resetBoard();
+				}
+
 				flowControl = 0;
 				return flowControl;
 			}
