@@ -39,7 +39,7 @@ void GameManager::update()
 			case 1:
 				viewer.initGamePage(); break;
 			case 2:
-				viewer.initReplayPage(&board); break;
+				viewer.initReplayPage(); break;
 			}
 			flowControl = temp;
 		}

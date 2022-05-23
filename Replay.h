@@ -22,9 +22,12 @@ public:
 	void setMoveIndex(int index) { readMoveIndex = 0; };
 
 	int getStatus() { return gameStatus; };
+	std::string getReadPath() { return readPath; };
 	std::string getBackMove() { return moveLog.back(); };
 	std::string getCurrent() { return moveLog[readMoveIndex]; };
 	std::vector<std::string> getMoveLog() { return moveLog; }
+
+
 	std::string operator++(int);
 };
 
