@@ -48,9 +48,10 @@ void OutputLog::writeWinner(std::string winner)
 void OutputLog::outputLogFile()
 {	std::time_t now_time;
 	now_time = time(NULL);
-	std::string logFilePath = "C:/Users/張睿麟/Documents/ChineseChess/replaylog/log_" + std::to_string(now_time) + ".txt";
+	std::string logFilePath = "replaylog/log_" + std::to_string(now_time) + ".txt";
 	std::ofstream ofs(logFilePath);
 	for (int i = 0; i < logArray.size(); i++) {
 		ofs << logArray[i]<< "\n";
 	}
+	ofs.close();
 }

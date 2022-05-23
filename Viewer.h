@@ -35,7 +35,7 @@ public:
 
 	void initMainPage();
 	void initGamePage();
-	void initReplayPage(Board*);
+	void initReplayPage();
 
 	int updateMainPage(sf::Event);
 	int updateGamePage(sf::Event, Board*);
