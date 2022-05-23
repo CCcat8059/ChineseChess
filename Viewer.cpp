@@ -55,8 +55,15 @@ void Viewer::initGamePage()
 	this->boardBackground->setPosition(20, 20);
 }
 
-void Viewer::initReplayPage()
+void Viewer::initReplayPage(Board* board)
 {
+	replay.selectFile();
+	replay.readFile();
+	replay.setMoveIndex(0);
+	initGamePage();
+	this->nextStepButton.setName("next_step_button");
+	this->nextStepButton.setPosition({ 1280,80 });
+	this->nextStepButton.setTexture("image/next_step_button.png");
 }
 
 int Viewer::updateMainPage(sf::Event ev)
@@ -68,7 +75,6 @@ int Viewer::updateMainPage(sf::Event ev)
 		window->close();
 		break;
 	case sf::Event::MouseButtonPressed:
-		std::cout << ev.mouseButton.x << " " << ev.mouseButton.y << '\n';
 		if (startButton.isClicked(ev))
 		{
 			flowControl = 1;	// enter game page
@@ -81,9 +87,9 @@ int Viewer::updateMainPage(sf::Event ev)
 		}
 		else if (loadButton.isClicked(ev))
 		{
-			std::cout << "load button have been clicked.\n";
+			flowControl = 2;
+			return flowControl;
 		}
-		// start, replay and exit button
 		break;
 	case sf::Event::KeyPressed:
 		if (ev.key.code == sf::Keyboard::Escape)
@@ -103,8 +109,8 @@ int Viewer::updateGamePage(sf::Event ev, Board* board)
 		window->close();
 		break;
 	case sf::Event::MouseButtonPressed:
-		// click Board 
-		clickChess = board->clickBoard(ev,window);
+		// click Board
+		clickChess = board->clickBoard(ev, window);
 		if (clickChess != nullptr)
 		{
 			std::cout << clickChess->getName() << ' ' << clickChess->getColor() << "\n";
@@ -126,7 +132,7 @@ int Viewer::updateGamePage(sf::Event ev, Board* board)
 				if (winner == "red") msg = "red win";
 				if (winner == "black") msg = "black win";
 				MessageBoxA(NULL, msg.c_str(), "Message", MB_OK);
-				
+
 				int result = MessageBoxA(NULL, "play again?", "Message", MB_OKCANCEL);
 				(*board).resetBoard();
 				if (result == 2) // back to main menu
@@ -154,9 +160,39 @@ int Viewer::updateGamePage(sf::Event ev, Board* board)
 	return flowControl;
 }
 
-int Viewer::updateReplayPage(sf::Event ev)
+int Viewer::updateReplayPage(sf::Event ev, Board* board)
 {
 	int flowControl = 2;
+	switch (ev.type)
+	{
+	case sf::Event::Closed:
+		window->close();
+		break;
+	case sf::Event::MouseButtonPressed:
+		// std::cout << ev.mouseButton.x << ' ' << ev.mouseButton.y << '\n';
+		if (nextStepButton.isClicked(ev))
+		{
+			std::string move = replay.getCurrent();
+			sf::Event replayEV;
+			replayEV.type = sf::Event::MouseButtonPressed;
+			replayEV.mouseButton.x = 54 + (move[1] - '0') * 87.5 + 37.5;
+			replayEV.mouseButton.y = 50 + (move[3] - '0') * 85.5 + 37.5;
+			board->clickBoard(replayEV, window);
+			replayEV.mouseButton.x = 54 + (move[6] - '0') * 87.5 + 37.5;
+			replayEV.mouseButton.y = 50 + (move[8] - '0') * 85.5 + 37.5;
+			board->clickBoard(replayEV, window);
+			replay++;
+			if (move == replay.getBackMove())
+			{
+				std::string winner = (replay.getStatus() == 1 ? "red win" : "black win");
+				MessageBoxA(NULL, winner.c_str(), "Message", MB_OK);
+				(*board).resetBoard();
+				flowControl = 0;
+				return flowControl;
+			}
+		}
+		break;
+	}
 	return flowControl;
 }
 
@@ -175,8 +211,8 @@ void Viewer::showGamePage(Board* board)
 	window->clear(sf::Color::White);
 	window->draw(*this->boardBackground);
 	// draw chess and the position that chess can move to
-	for (auto v : board->getBoard()) {
-		for (auto c : v) {
+	for (auto& v : board->getBoard()) {
+		for (auto& c : v) {
 			sf::Sprite sp = c->getBody();
 			if (c->canMove_flag) {
 				if (c->getName() == "empty") {
@@ -227,6 +263,46 @@ void Viewer::showGamePage(Board* board)
 	window->display();
 }
 
-void Viewer::showReplayPage()
+void Viewer::showReplayPage(Board* board)
 {
+	window->clear(sf::Color::White);
+	window->draw(nextStepButton.getBody());
+
+	window->draw(*this->boardBackground);
+	for (auto& v : board->getBoard())
+	{
+		for (auto& c : v)
+		{
+			if (c->getName() != "empty")
+				window->draw(c->getBody());
+		}
+	}
+
+	// display dead chesses and 
+	std::vector<std::string> removedChesses = board->getRemovedChesses();
+	for (int i = 0; i < removedChesses.size(); i++) {
+		std::string path = removedChesses[i];
+		sf::Vector2f position = sf::Vector2f(850 + (i / 8) * 100, 75 + (i % 8) * 100);
+		sf::Texture texture;
+		texture.loadFromFile(path);
+		sf::Sprite sp;
+		sp.setTexture(texture);
+		sp.setPosition(position);
+		window->draw(sp);
+	}
+
+	// display which side should move
+	std::string thitRoundColor;
+	thitRoundColor = board->getRoundCount() % 2 == 0 ? "red" : "black";
+	sf::Font font;
+	font.loadFromFile("font/arial.ttf");
+	sf::Text text;
+	text.setFont(font);
+	text.setString("Current Player : " + thitRoundColor);
+	sf::Vector2f position = sf::Vector2f(850, 10);
+	text.setPosition(position);
+	text.setCharacterSize(50); // in pixels, not points!
+	text.setFillColor(sf::Color::Black);
+	window->draw(text);
+	window->display();
 }
