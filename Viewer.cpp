@@ -103,21 +103,25 @@ int Viewer::updateGamePage(sf::Event ev, Board* board)
 		window->close();
 		break;
 	case sf::Event::MouseButtonPressed:
-		// click Board
+		// click Board 
 		clickChess = board->clickBoard(ev,window);
 		if (clickChess != nullptr)
 		{
 			std::cout << clickChess->getName() << ' ' << clickChess->getColor() << "\n";
+
+			// Function which judge is CheckMate or not
 			std::string checkmate = board->getCheckmate();
-			if (checkmate != "") {
+			if (checkmate != "") { // if checkMate confirmed, send the message to player.
 				std::string msg;
 				if (checkmate == "red") msg = "red checkmate";
 				if (checkmate == "black") msg = "black checkmate";
 				MessageBoxA(NULL, msg.c_str(), "Message", MB_OKCANCEL | MB_ICONEXCLAMATION);
 				board->setCheckmate("");
 			}
+
+			// Function which judge is over or not
 			std::string winner = board->getWinner();
-			if (winner != "") {
+			if (winner != "") { // if overed, show the result, and player can choice play again or not.
 				std::string msg;
 				if (winner == "red") msg = "red win";
 				if (winner == "black") msg = "black win";

@@ -23,6 +23,9 @@ private:
 	std::string checkmate;
 	std::string winner;
 	int roundCount;
+
+	// a, b variables for moveChess function
+	Chess* chessA, chessB;
 public:
 	Board();
 	~Board();
