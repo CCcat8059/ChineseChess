@@ -189,11 +189,13 @@ int Viewer::updateReplayPage(sf::Event ev, Board* board)
 					std::string finish = "the replay log is finish";
 					MessageBoxA(NULL, finish.c_str(), "Message", MB_OK);
 					(*board).resetBoard();
+					replay.reset();
 				}
 				else {
-					std::string winner = (replay.getStatus() == 1 ? "red win" : "black win");
+					std::string winner = (replay.getStatus() == 0 ? "red win" : "black win");
 					MessageBoxA(NULL, winner.c_str(), "Message", MB_OK);
 					(*board).resetBoard();
+					replay.reset();
 				}
 
 				flowControl = 0;
