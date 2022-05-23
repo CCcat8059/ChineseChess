@@ -84,13 +84,16 @@ Chess* Board::clickBoard(sf::Event& ev, sf::RenderWindow* window)
 {
 	for (int i = 0; i < chessBoard.size(); i++)
 	{
-		for (int j = 0; j < chessBoard[i].size(); j++)
+		for (int j = 0; j < chessBoard[i].size(); j++) // use two for-loop to trival all chess. 
 		{
 			if (chessBoard[i][j]->isClicked(ev))
 			{
 				int tempX = chosenChessIndex.x, tempY = chosenChessIndex.y;
 				if (tempX != -1 && tempY != -1)
 				{
+					// chessB = chessBoard[i][j]
+					// moveChess(chessA, chessB);
+
 					//清除提示可走
 					for (int x = 0; x < chessBoard.size(); x++)
 					{
@@ -176,6 +179,7 @@ Chess* Board::clickBoard(sf::Event& ev, sf::RenderWindow* window)
 				}
 				else if (chessBoard[i][j]->getName() != "empty")
 				{
+					// chessA = chessBoard[i][j]
 					// store
 					std::string thitRoundColor;
 					thitRoundColor = roundCount % 2 == 0 ? "red" : "black";
@@ -226,3 +230,8 @@ void Board::removeChess(Point target)
 	sf::Vector2f position = sf::Vector2f(54 + target.y * 87.5 - 37.5, 50 + target.x * 85.5 - 37.5);
 	chessBoard[target.x][target.y] = new Empty(position);
 }
+
+
+
+
+
