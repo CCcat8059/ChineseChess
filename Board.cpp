@@ -91,9 +91,6 @@ Chess* Board::clickBoard(sf::Event& ev, sf::RenderWindow* window)
 				int tempX = chosenChessIndex.x, tempY = chosenChessIndex.y;
 				if (tempX != -1 && tempY != -1)
 				{
-					// chessB = chessBoard[i][j]
-					// moveChess(chessA, chessB);
-
 					//清除提示可走
 					for (int x = 0; x < chessBoard.size(); x++)
 					{
@@ -105,6 +102,7 @@ Chess* Board::clickBoard(sf::Event& ev, sf::RenderWindow* window)
 
 					// 如果判斷這個棋子的Move規則，可以移動到現在選的位置 = > swap
 					if (chessBoard[tempX][tempY]->canMove(tempX, tempY, i, j, chessBoard) == true) {
+						outputLog.writeLog(chessBoard[tempX][tempY]->getColor(), chessBoard[tempX][tempY]->getName(), tempX, tempY, i, j);
 						// if the color is opposite, eat it and swap
 						// otherwise just swap
 						sf::Texture tmpTexture;
@@ -136,6 +134,8 @@ Chess* Board::clickBoard(sf::Event& ev, sf::RenderWindow* window)
 
 						if (chessBoard[i][j]->getName() == "king") {
 							winner = thitRoundColor;
+							outputLog.writeWinner(winner);
+							outputLog.outputLogFile();
 							return chessBoard[i][j];
 						}
 						if (chessBoard[tempX][tempY]->getColor() != chessBoard[i][j]->getColor()) {
