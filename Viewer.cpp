@@ -55,7 +55,7 @@ void Viewer::initGamePage()
 	this->boardBackground->setPosition(20, 20);
 }
 
-void Viewer::initReplayPage(Board* board)
+void Viewer::initReplayPage()
 {
 	replay.selectFile();
 	replay.readFile();
