@@ -6,7 +6,7 @@
 #include <string>
 #define WIN32_LEAN_AND_MEAN
 #include <windows.h>
-
+#include "OutputLog.h"
 #include "Chess.h"
 
 struct Point { int x; int y; };
@@ -30,6 +30,7 @@ public:
 	Board();
 	~Board();
 
+	OutputLog outputLog;
 	std::vector<std::string> getRemovedChesses() { return removedChesses; };
 	std::vector<std::vector<Chess*>> getBoard() { return chessBoard; };
 	Point getChosenChessIndex() { return chosenChessIndex; };
