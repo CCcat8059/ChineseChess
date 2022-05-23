@@ -19,8 +19,10 @@ public:
 	void selectFile();
 	void readFile();
 
-	std::string getBackMove() { return moveLog.back(); };
+	void setMoveIndex(int index) { readMoveIndex = 0; };
+
 	int getStatus() { return gameStatus; };
+	std::string getBackMove() { return moveLog.back(); };
 	std::string getCurrent() { return moveLog[readMoveIndex]; };
 
 	std::string operator++(int);
