@@ -5,6 +5,7 @@
 #include <SFML/System.hpp>
 #include <SFML/Audio.hpp>
 
+#include "Replay.h"
 #include "Button.h"
 #include "Board.h"
 
@@ -21,6 +22,10 @@ private:
 	// game page object
 	sf::Texture boardTexture;
 	sf::Sprite* boardBackground;
+
+	// load log object
+	Replay replay;
+	Button nextStepButton;
 public:
 	Viewer();
 	~Viewer();
@@ -30,16 +35,13 @@ public:
 
 	void initMainPage();
 	void initGamePage();
-	void initEndPage();
 	void initReplayPage();
 
 	int updateMainPage(sf::Event);
 	int updateGamePage(sf::Event, Board*);
-	int updateEndPage(sf::Event);
-	void updateReplayPage();
+	int updateReplayPage(sf::Event, Board*);
 
 	void showMainPage();
 	void showGamePage(Board*);
-	void showEndPage();
-	void showReplayPage();
+	void showReplayPage(Board*);
 };

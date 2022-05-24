@@ -2,6 +2,7 @@
 
 int main()
 {
+	
 	GameManager game;
 
 	while (game.isRunning())
@@ -10,4 +11,6 @@ int main()
 		game.render();
 	}
 	return EXIT_SUCCESS;
+	
+
 }

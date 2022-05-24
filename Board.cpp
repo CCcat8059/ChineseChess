@@ -24,12 +24,28 @@ Board::Board()
 
 	chessBoard.resize(10);
 	for (auto& c : chessBoard)
-		c.resize(9);
+		c.resize(9, nullptr);
 
+	resetBoard();
+}
+
+Board::~Board()
+{
+	for (auto& v : chessBoard)
+	{
+		for (auto& c : v)
+			delete c;
+	}
+}
+
+void Board::resetBoard()
+{
 	for (int i = 0; i < 10; i++) {
 		for (int j = 0; j < 9; j++) {
 			std::string color = (i <= 4 && j <= 9) ? "black" : "red";
 			sf::Vector2f position = sf::Vector2f(54 + j * 87.5 - 37.5, 50 + i * 85.5 - 37.5);
+			if (chessBoard[i][j] != nullptr)
+				delete chessBoard[i][j];
 
 			if (nameTable[i][j] == "Empty") {
 				chessBoard[i][j] = new Empty(position);
@@ -57,24 +73,18 @@ Board::Board()
 			}
 		}
 	}
-
 	chosenChessIndex = { -1,-1 };
-}
-
-Board::~Board()
-{
-	for (auto& v : chessBoard)
-	{
-		for (auto& c : v)
-			delete c;
-	}
+	removedChesses = std::vector<std::string>();
+	checkmate = "";
+	winner = "";
+	roundCount = 0;
 }
 
 Chess* Board::clickBoard(sf::Event& ev, sf::RenderWindow* window)
 {
 	for (int i = 0; i < chessBoard.size(); i++)
 	{
-		for (int j = 0; j < chessBoard[i].size(); j++)
+		for (int j = 0; j < chessBoard[i].size(); j++) // use two for-loop to trival all chess. 
 		{
 			if (chessBoard[i][j]->isClicked(ev))
 			{
@@ -89,10 +99,10 @@ Chess* Board::clickBoard(sf::Event& ev, sf::RenderWindow* window)
 							chessBoard[x][y]->canMove_flag = false;
 						}
 					}
-					
+
 					// 如果判斷這個棋子的Move規則，可以移動到現在選的位置 = > swap
 					if (chessBoard[tempX][tempY]->canMove(tempX, tempY, i, j, chessBoard) == true) {
-
+						outputLog.writeLog(chessBoard[tempX][tempY]->getColor(), chessBoard[tempX][tempY]->getName(), tempX, tempY, i, j);
 						// if the color is opposite, eat it and swap
 						// otherwise just swap
 						sf::Texture tmpTexture;
@@ -100,7 +110,6 @@ Chess* Board::clickBoard(sf::Event& ev, sf::RenderWindow* window)
 						tmpTexture.update(*window);
 
 						for (int frame = 0; frame < 75; frame++) {
-
 							int step_x = ((chessBoard[i][j]->getBody().getPosition().x) - (chessBoard[tempX][tempY]->getBody().getPosition().x)) / 75;
 							int step_y = ((chessBoard[i][j]->getBody().getPosition().y) - (chessBoard[tempX][tempY]->getBody().getPosition().y)) / 75;
 							sf::Vector2f position = sf::Vector2f((chessBoard[tempX][tempY]->getBody().getPosition().x) + step_x * frame, (chessBoard[tempX][tempY]->getBody().getPosition().y) + step_y * frame);
@@ -125,6 +134,8 @@ Chess* Board::clickBoard(sf::Event& ev, sf::RenderWindow* window)
 
 						if (chessBoard[i][j]->getName() == "king") {
 							winner = thitRoundColor;
+							outputLog.writeWinner(winner);
+							outputLog.outputLogFile();
 							return chessBoard[i][j];
 						}
 						if (chessBoard[tempX][tempY]->getColor() != chessBoard[i][j]->getColor()) {
@@ -135,8 +146,6 @@ Chess* Board::clickBoard(sf::Event& ev, sf::RenderWindow* window)
 						chessBoard[tempX][tempY] = temp;
 						swapChess(chessBoard[i][j], chessBoard[tempX][tempY]);
 						chosenChessIndex = { -1,-1 };
-
-
 
 						for (int _i = 0; _i < chessBoard.size(); _i++)//移動完檢查同色每個棋子是否造成將軍
 						{
@@ -170,6 +179,7 @@ Chess* Board::clickBoard(sf::Event& ev, sf::RenderWindow* window)
 				}
 				else if (chessBoard[i][j]->getName() != "empty")
 				{
+					// chessA = chessBoard[i][j]
 					// store
 					std::string thitRoundColor;
 					thitRoundColor = roundCount % 2 == 0 ? "red" : "black";
@@ -206,8 +216,8 @@ Chess* Board::clickBoard(sf::Event& ev, sf::RenderWindow* window)
 void Board::swapChess(Chess* a, Chess* b)
 {
 	sf::Vector2f tempPos = a->getBody().getPosition();
-	a->getBody().setPosition(b->getBody().getPosition());
-	b->getBody().setPosition(tempPos);
+	a->setPosition(b->getBody().getPosition());
+	b->setPosition(tempPos);
 }
 
 void Board::removeChess(Point target)
@@ -220,3 +230,8 @@ void Board::removeChess(Point target)
 	sf::Vector2f position = sf::Vector2f(54 + target.y * 87.5 - 37.5, 50 + target.x * 85.5 - 37.5);
 	chessBoard[target.x][target.y] = new Empty(position);
 }
+
+
+
+
+
