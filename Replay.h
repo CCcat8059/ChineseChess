@@ -19,7 +19,8 @@ public:
 	void selectFile();
 	void readFile();
 
-	void setMoveIndex(int index) { readMoveIndex = 0; };
+	void reset();
+	void setMoveIndex(int index) { readMoveIndex = index; };
 
 	int getStatus() { return gameStatus; };
 	std::string getReadPath() { return readPath; };

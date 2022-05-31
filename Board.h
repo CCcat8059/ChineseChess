@@ -37,6 +37,7 @@ public:
 	std::string getCheckmate() { return checkmate; };
 	int getRoundCount() { return roundCount; };
 	std::string getWinner() { return winner; };
+	void setWinner(std::string win) { winner = win; };
 
 	void addRemovedChess(std::string name) { removedChesses.push_back(name); };
 	void setCheckmate(std::string checkmate) { this->checkmate = checkmate; };

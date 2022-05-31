@@ -29,6 +29,9 @@ void GameManager::update()
 			temp = viewer.updateGamePage(ev, &board); break;
 		case 2:
 			temp = viewer.updateReplayPage(ev, &board); break;
+		case 3:
+			temp = viewer.updateOnlinePage(ev, &board,true);
+			break;
 		}
 		if (flowControl != temp)
 		{
@@ -40,6 +43,22 @@ void GameManager::update()
 				viewer.initGamePage(); break;
 			case 2:
 				viewer.initReplayPage(); break;
+			case 3:
+				viewer.initOnlinePage(); 
+				break;
+			}
+			flowControl = temp;
+		}
+	}
+	if (flowControl == 3) {
+		int temp = 0;
+		temp = viewer.updateOnlinePage( &board);
+		if (flowControl != temp)
+		{
+			switch (temp)
+			{
+			case 0:
+				viewer.initMainPage(); break;
 			}
 			flowControl = temp;
 		}
@@ -56,5 +75,7 @@ void GameManager::render()
 		viewer.showGamePage(&board); break;
 	case 2:
 		viewer.showReplayPage(&board); break;
+	case 3:
+		viewer.showOnlinePage(&board); break;
 	}
 }

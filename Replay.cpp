@@ -21,8 +21,6 @@ void Replay::selectFile()
 	ofn.lpstrInitialDir = NULL;
 	GetCurrentDirectoryA(MAX_PATH, currFile);
 
-	readPath = "";
-
 	if (GetOpenFileNameA((LPOPENFILENAMEA)&ofn))
 	{
 		// std::cout << "You chose the file \"" << ofn.lpstrFile << "\"\n";
@@ -102,11 +100,10 @@ void Replay::readFile()
 		std::string temp, write = "";
 		for (int i = 0; getline(ss, temp, ' '); i++)
 		{
-			if (temp.find("Win") != std::string::npos)
-			{
-				gameStatus = (temp[0] == 'R' ? 0 : 1);
-				break;
-			}
+			if (temp.find("Red") != std::string::npos)
+				gameStatus = 0;
+			else if (temp.find("Black") != std::string::npos)
+				gameStatus = 1;
 			switch (i)
 			{
 			case 4:
@@ -120,11 +117,14 @@ void Replay::readFile()
 			moveLog.push_back(write);
 	}
 	fin.close();
-	/*
-	for (auto& s : moveLog)
-		std::cout << s << '\n';
-	// (4,6)(4,5)
-	*/
+}
+
+void Replay::reset()
+{
+	readPath = "";
+	readMoveIndex = 0;
+	gameStatus = -1;
+	moveLog.clear();
 }
 
 std::string Replay::operator++(int)
