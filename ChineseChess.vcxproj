@@ -156,6 +156,7 @@
     <ClCompile Include="Chess.cpp" />
     <ClCompile Include="GameManager.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="Neteork.cpp" />
     <ClCompile Include="OutputLog.cpp" />
     <ClCompile Include="Replay.cpp" />
     <ClCompile Include="Viewer.cpp" />
@@ -165,6 +166,7 @@
     <ClInclude Include="Button.h" />
     <ClInclude Include="Chess.h" />
     <ClInclude Include="GameManager.h" />
+    <ClInclude Include="Network.h" />
     <ClInclude Include="OutputLog.h" />
     <ClInclude Include="Replay.h" />
     <ClInclude Include="Viewer.h" />
