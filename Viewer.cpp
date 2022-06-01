@@ -212,7 +212,28 @@ int Viewer::updateGamePage(sf::Event ev, Board* board)
 	}
 	return flowControl;
 }
+int Viewer::updateGamePage(Board* board) {
+	int flowControl = 1;
 
+	std::string winner = board->getWinner();
+	if (winner != "") { // if overed, show the result, and player can choice play again or not.
+		std::string msg;
+		if (winner == "red") msg = "red win";
+		if (winner == "black") msg = "black win";
+		if (winner == "tie") msg = "Tie";
+		MessageBoxA(NULL, msg.c_str(), "Message", MB_OK);
+
+		int result = MessageBoxA(NULL, "play again?", "Message", MB_OKCANCEL);
+		(*board).resetBoard();
+		this->start_time = time(NULL);
+		if (result == 2) // back to main menu
+		{
+			flowControl = 0;
+			return flowControl;
+		}
+	}
+	return flowControl;
+}
 int Viewer::updateReplayPage(sf::Event ev, Board* board)
 {
 	int flowControl = 2;
@@ -309,7 +330,7 @@ int Viewer::updateOnlinePage(sf::Event ev, Board* board,bool if_from_user) {
 			if (winner == "tie") msg = "Tie";
 			MessageBoxA(NULL, msg.c_str(), "Message", MB_OK);
 
-			int result = MessageBoxA(NULL, "play again?", "Message", MB_OK);
+			//int result = MessageBoxA(NULL, "END", "Message", MB_OK);
 			(*board).resetBoard();
 			flowControl = 0;
 			return flowControl;
@@ -337,7 +358,7 @@ int Viewer::updateOnlinePage(Board* board) {
 	now_time = time(NULL);
 	if (now_time - last_update_time >= update_interval) {
 		std::string act = onlineGame.getAct();
-		std::cout << act << ','<< onlineGame.commnd_index<<'\n';
+		//std::cout << act << ','<< onlineGame.commnd_index<<'\n';
 		last_update_time = time(NULL);
 		if (act != "OUT_OF_RANGE" && act != "new") {
 			sf::Event onlineEV;
@@ -364,7 +385,7 @@ void Viewer::showMainPage()
 void Viewer::showGamePage(Board* board)
 {
 	this->now_time = time(NULL);
-	if (timeLimit - (now_time - start_time) < 0) {
+	if (timeLimit - (now_time - start_time) <= 0) {
 		board->setWinner("tie");
 	}
 	window->clear(sf::Color::White);
@@ -537,6 +558,6 @@ void Viewer::showOnlinePage(Board* board)
 	text.setPosition(position);
 	window->draw(text);
 
-	window->draw(surrenderButton.getBody());
+	//window->draw(surrenderButton.getBody());
 	window->display();
 }

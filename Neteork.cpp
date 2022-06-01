@@ -30,7 +30,7 @@ bool Network::updateAct(std::string act) {
 	// encode the parameters in the request body
 	std::ostringstream stream;
 	stream << "?roomId=" << roomId << "&act="<<act<< "&color="<<color;
-	std::cout << stream.str()<<std::endl;
+	//std::cout << stream.str()<<std::endl;
 	request = sf::Http::Request("/update_act"+ stream.str(), sf::Http::Request::Get);
 
 	response = http.sendRequest(request);
