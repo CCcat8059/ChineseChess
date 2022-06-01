@@ -53,7 +53,7 @@ public:
 	int updateGamePage(sf::Event, Board*);
 	int updateGamePage( Board*);
 	int updateReplayPage(sf::Event, Board*);
-	int updateOnlinePage(sf::Event, Board*, bool if_from_user);
+	int updateOnlinePage(sf::Event, Board*, bool is_from_user);
 	int updateOnlinePage(Board*);
 
 	void showMainPage();

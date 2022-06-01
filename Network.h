@@ -23,6 +23,7 @@ public:
 	bool updateAct(std::string act);
 	std::string getAct();
 	std::string getColor() { return color; };
+	std::string getRoomId() { return roomId; };
 	bool delRoom();
 	bool create_or_join_room(std::string _roomId);
 	int commnd_index = 0;
