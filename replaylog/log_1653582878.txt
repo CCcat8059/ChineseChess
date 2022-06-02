@@ -1,0 +1,7 @@
+Player: 1, Action: Soldier (6, 6) -> (6, 5)
+Player: 2, Action: Soldier (6, 3) -> (6, 4)
+Player: 1, Action: Soldier (6, 5) -> (6, 4)
+Player: 2, Action: Cannon (7, 2) -> (7, 9)
+Player: 1, Action: Advisor (5, 9) -> (4, 8)
+Player: 2, Action: Cannon (7, 9) -> (4, 9)
+Black Win
