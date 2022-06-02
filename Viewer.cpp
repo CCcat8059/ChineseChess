@@ -261,10 +261,28 @@ int Viewer::updateReplayPage(sf::Event ev, Board* board)
 			if (move == replay.getBackMove())
 			{
 				if (replay.getStatus() == -1) {
-					std::string finish = "the replay log is finish";
-					MessageBoxA(NULL, finish.c_str(), "Message", MB_OK);
-					(*board).resetBoard();
-					replay.reset();
+					std::string finish = "the replay log is finish¡AContinue?";
+					//MessageBoxA(NULL, finish.c_str(), "Message", MB_OK);
+
+					int result = MessageBoxA(NULL, finish.c_str(), "Message", MB_OKCANCEL);
+					if (result == 1) //Continue
+					{
+						(*board).setCheckmate("");
+						replay.reset();
+						flowControl = 1;
+						return flowControl;
+					}
+
+					
+					if (result == 2) // back to main menu
+					{
+						replay.reset();
+						flowControl = 0;
+						(*board).resetBoard();
+						return flowControl;
+					}
+					
+					
 				}
 				else {
 					std::string winner = (replay.getStatus() == 0 ? "red win" : "black win");
