@@ -151,6 +151,7 @@ int Viewer::updateGamePage(sf::Event ev, Board* board)
 	switch (ev.type)
 	{
 	case sf::Event::Closed:
+		board->outputLog.outputLogFile();
 		window->close();
 		break;
 	case sf::Event::MouseButtonPressed:
