@@ -155,6 +155,7 @@ int Viewer::updateGamePage(sf::Event ev, Board* board)
 		break;
 	case sf::Event::MouseButtonPressed:
 	{
+
 		// click Board
 		clickChess = board->clickBoard(ev, window);
 		if (surrenderButton.isClicked(ev)) {
@@ -212,7 +213,28 @@ int Viewer::updateGamePage(sf::Event ev, Board* board)
 	}
 	return flowControl;
 }
+int Viewer::updateGamePage(Board* board) {
+	int flowControl = 1;
 
+	std::string winner = board->getWinner();
+	if (winner != "") { // if overed, show the result, and player can choice play again or not.
+		std::string msg;
+		if (winner == "red") msg = "red win";
+		if (winner == "black") msg = "black win";
+		if (winner == "tie") msg = "Tie";
+		MessageBoxA(NULL, msg.c_str(), "Message", MB_OK);
+
+		int result = MessageBoxA(NULL, "play again?", "Message", MB_OKCANCEL);
+		(*board).resetBoard();
+		this->start_time = time(NULL);
+		if (result == 2) // back to main menu
+		{
+			flowControl = 0;
+			return flowControl;
+		}
+	}
+	return flowControl;
+}
 int Viewer::updateReplayPage(sf::Event ev, Board* board)
 {
 	int flowControl = 2;
@@ -239,10 +261,28 @@ int Viewer::updateReplayPage(sf::Event ev, Board* board)
 			if (move == replay.getBackMove())
 			{
 				if (replay.getStatus() == -1) {
-					std::string finish = "the replay log is finish";
-					MessageBoxA(NULL, finish.c_str(), "Message", MB_OK);
-					(*board).resetBoard();
-					replay.reset();
+					std::string finish = "the replay log is finish¡AContinue?";
+					//MessageBoxA(NULL, finish.c_str(), "Message", MB_OK);
+
+					int result = MessageBoxA(NULL, finish.c_str(), "Message", MB_OKCANCEL);
+					if (result == 1) //Continue
+					{
+						(*board).setCheckmate("");
+						replay.reset();
+						flowControl = 1;
+						return flowControl;
+					}
+
+					
+					if (result == 2) // back to main menu
+					{
+						replay.reset();
+						flowControl = 0;
+						(*board).resetBoard();
+						return flowControl;
+					}
+					
+					
 				}
 				else {
 					std::string winner = (replay.getStatus() == 0 ? "red win" : "black win");
@@ -259,7 +299,7 @@ int Viewer::updateReplayPage(sf::Event ev, Board* board)
 	}
 	return flowControl;
 }
-int Viewer::updateOnlinePage(sf::Event ev, Board* board,bool if_from_user) {
+int Viewer::updateOnlinePage(sf::Event ev, Board* board,bool is_from_user) {
 	int flowControl = 3;
 	Chess* clickChess = nullptr;
 
@@ -271,50 +311,56 @@ int Viewer::updateOnlinePage(sf::Event ev, Board* board,bool if_from_user) {
 		break;
 	case sf::Event::MouseButtonPressed:
 	{
-		
-		if (if_from_user) {
-			//online game
-			std::string act;
-			act = std::to_string(ev.mouseButton.x) + "," + std::to_string(ev.mouseButton.y);
-			onlineGame.updateAct(act);
-		}
-		// click Board
-		
-		clickChess = board->clickBoard(ev, window);
-		if (surrenderButton.isClicked(ev)) {
-			std::string winColor;
-			winColor = board->getRoundCount() % 2 != 0 ? "red" : "black";
-			board->setWinner(winColor);
-		}
-		if (clickChess != nullptr)
-		{
-			std::cout << clickChess->getName() << ' ' << clickChess->getColor() << "\n";
+		std::string thitRoundColor;
+		thitRoundColor = board->getRoundCount() % 2 == 0 ? "red" : "black";
+		if (is_from_user == false || thitRoundColor == onlineGame.getColor()) {
 
-			// Function which judge is CheckMate or not
-			std::string checkmate = board->getCheckmate();
-			if (checkmate != "") { // if checkMate confirmed, send the message to player.
-				std::string msg;
-				if (checkmate == "red") msg = "red checkmate";
-				if (checkmate == "black") msg = "black checkmate";
-				MessageBoxA(NULL, msg.c_str(), "Message", MB_OK);
-				board->setCheckmate("");
+			if (is_from_user) {
+				//online game
+				std::string act;
+				act = std::to_string(ev.mouseButton.x) + "," + std::to_string(ev.mouseButton.y);
+				onlineGame.updateAct(act);
 			}
-		}
-		// Function which judge is over or not
-		std::string winner = board->getWinner();
-		if (winner != "") { // if overed, show the result, and player can choice play again or not.
-			std::string msg;
-			if (winner == "red") msg = "red win";
-			if (winner == "black") msg = "black win";
-			if (winner == "tie") msg = "Tie";
-			MessageBoxA(NULL, msg.c_str(), "Message", MB_OK);
+			// click Board
 
-			int result = MessageBoxA(NULL, "play again?", "Message", MB_OK);
-			(*board).resetBoard();
-			flowControl = 0;
-			return flowControl;
-			
+			clickChess = board->clickBoard(ev, window);
+			if (surrenderButton.isClicked(ev)) {
+				std::string winColor;
+				winColor = board->getRoundCount() % 2 != 0 ? "red" : "black";
+				board->setWinner(winColor);
+			}
+			if (clickChess != nullptr)
+			{
+				std::cout << clickChess->getName() << ' ' << clickChess->getColor() << "\n";
+
+				// Function which judge is CheckMate or not
+				std::string checkmate = board->getCheckmate();
+				if (checkmate != "") { // if checkMate confirmed, send the message to player.
+					std::string msg;
+					if (checkmate == "red") msg = "red checkmate";
+					if (checkmate == "black") msg = "black checkmate";
+					MessageBoxA(NULL, msg.c_str(), "Message", MB_OK);
+					board->setCheckmate("");
+				}
+			}
+			// Function which judge is over or not
+			std::string winner = board->getWinner();
+			if (winner != "") { // if overed, show the result, and player can choice play again or not.
+				std::string msg;
+				if (winner == "red") msg = "red win";
+				if (winner == "black") msg = "black win";
+				if (winner == "tie") msg = "Tie";
+				MessageBoxA(NULL, msg.c_str(), "Message", MB_OK);
+
+				//int result = MessageBoxA(NULL, "END", "Message", MB_OK);
+				(*board).resetBoard();
+				flowControl = 0;
+				return flowControl;
+
+			}
+
 		}
+		return flowControl;
 		break;
 	}
 	case sf::Event::KeyPressed:
@@ -337,7 +383,7 @@ int Viewer::updateOnlinePage(Board* board) {
 	now_time = time(NULL);
 	if (now_time - last_update_time >= update_interval) {
 		std::string act = onlineGame.getAct();
-		std::cout << act << ','<< onlineGame.commnd_index<<'\n';
+		//std::cout << act << ','<< onlineGame.commnd_index<<'\n';
 		last_update_time = time(NULL);
 		if (act != "OUT_OF_RANGE" && act != "new") {
 			sf::Event onlineEV;
@@ -364,7 +410,7 @@ void Viewer::showMainPage()
 void Viewer::showGamePage(Board* board)
 {
 	this->now_time = time(NULL);
-	if (timeLimit - (now_time - start_time) < 0) {
+	if (timeLimit - (now_time - start_time) <= 0) {
 		board->setWinner("tie");
 	}
 	window->clear(sf::Color::White);
@@ -537,6 +583,12 @@ void Viewer::showOnlinePage(Board* board)
 	text.setPosition(position);
 	window->draw(text);
 
-	window->draw(surrenderButton.getBody());
+	text.setCharacterSize(25);
+	text.setString("Room ID : " + onlineGame.getRoomId());
+	position = sf::Vector2f(1200, 840);
+	text.setPosition(position);
+	window->draw(text);
+
+	//window->draw(surrenderButton.getBody());
 	window->display();
 }

@@ -50,6 +50,21 @@ void GameManager::update()
 			flowControl = temp;
 		}
 	}
+
+
+	if (flowControl == 1) {
+		int temp = 0;
+		temp = viewer.updateGamePage(&board);
+		if (flowControl != temp)
+		{
+			switch (temp)
+			{
+			case 0:
+				viewer.initMainPage(); break;
+			}
+			flowControl = temp;
+		}
+	}
 	if (flowControl == 3) {
 		int temp = 0;
 		temp = viewer.updateOnlinePage( &board);
@@ -59,6 +74,8 @@ void GameManager::update()
 			{
 			case 0:
 				viewer.initMainPage(); break;
+			case 1:
+				viewer.initGamePage(); break;
 			}
 			flowControl = temp;
 		}

@@ -18,7 +18,7 @@ private:
 	std::time_t start_time;
 	std::time_t last_update_time;
 	std::time_t now_time;
-	int timeLimit = 10;
+	int timeLimit = 100;
 	int update_interval = 1;
 
 	// main page object
@@ -51,8 +51,9 @@ public:
 
 	int updateMainPage(sf::Event);
 	int updateGamePage(sf::Event, Board*);
+	int updateGamePage( Board*);
 	int updateReplayPage(sf::Event, Board*);
-	int updateOnlinePage(sf::Event, Board*, bool if_from_user);
+	int updateOnlinePage(sf::Event, Board*, bool is_from_user);
 	int updateOnlinePage(Board*);
 
 	void showMainPage();
