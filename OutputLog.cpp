@@ -46,7 +46,8 @@ void OutputLog::writeWinner(std::string winner)
 }
 
 void OutputLog::outputLogFile()
-{	std::time_t now_time;
+{	
+	std::time_t now_time;
 	now_time = time(NULL);
 	std::string logFilePath = "replaylog/log_" + std::to_string(now_time) + ".txt";
 	std::ofstream ofs(logFilePath);
